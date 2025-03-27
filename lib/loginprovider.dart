@@ -52,7 +52,6 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  // 🔒 Sign Out Method
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();

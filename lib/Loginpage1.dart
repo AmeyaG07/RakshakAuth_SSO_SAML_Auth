@@ -4,8 +4,15 @@ import 'package:untitled/landingpage.dart';
 import 'package:untitled/loginprovider.dart';
 
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool showLoginCard = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,29 +30,42 @@ class LoginPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.login),
             onPressed: ()
-            {},
+            {
+              setState(() {
+                showLoginCard = true;
+              });
+            },
           ),
           Text(' Login     '),
           IconButton(
             icon: Icon(Icons.add_box_outlined),
             onPressed: ()
             {
+              setState(() {
+                showLoginCard = !showLoginCard;
+              });
             },
           ),
           Text('   Signup       '),
-
         ],
       ),
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/Background.png',
+              'assets/images/homescreen.png',
               fit: BoxFit.cover,
             ),
           ),
-          Center(
-            child: Logincard(),
+          if(showLoginCard)
+            Center(
+            child: Logincard(
+              onClose: (){
+                setState((){
+                  showLoginCard =false;
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -54,8 +74,9 @@ class LoginPage extends StatelessWidget {
 }
 
 class Logincard extends StatelessWidget {
-  const Logincard({Key? key});
+  final VoidCallback onClose;
 
+  const Logincard({Key? key, required this.onClose}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     TextEditingController usernameController = TextEditingController();
@@ -63,7 +84,7 @@ class Logincard extends StatelessWidget {
 
     return SizedBox(
       width: 800,
-      height: 600,
+      height: 500,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 100.0),
         shape: RoundedRectangleBorder(
@@ -73,9 +94,17 @@ class Logincard extends StatelessWidget {
         color: Colors.white70,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: onClose,
+                ),
+              ),
               Image.asset('assets/images/RA.png',
                 height: 50,
                 width: 50,
@@ -89,6 +118,13 @@ class Logincard extends StatelessWidget {
                 controller: usernameController,
                 decoration: const InputDecoration(
                     labelText: 'Username', border: OutlineInputBorder()),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: onClose, // Call onClose to hide the login card
+                ),
               ),
               const SizedBox(height: 10),
               TextField(
@@ -169,6 +205,8 @@ class Logincard extends StatelessWidget {
                 child: const Text("Login"),
               ),
             ],
+          ),
+
           ),
         ),
       ),
