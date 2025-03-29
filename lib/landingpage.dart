@@ -8,61 +8,164 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Consumer<LoginProvider>(
+    return Consumer<LoginProvider>(
+      builder: (context, loginprov, child) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blueGrey,
+            foregroundColor: Colors.white,
+            title: Text('${loginprov.user?.username ?? "Admin"} Login'),
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
+            ),
+            actions: [
+              IconButton(icon: Icon(Icons.account_circle_outlined), onPressed: () {}),
+              Text(' Profile     '),
+              IconButton(icon: Icon(Icons.account_balance_sharp), onPressed: () {}),
+              Text('   Contact Us   '),
+              IconButton(icon: Icon(Icons.add_call), onPressed: () {}),
+              Text('   Home    '),
+              IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  Provider.of<LoginProvider>(context, listen: false).signOut();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+              ),
+              Text(' Logout '),
+            ],
+          ),
+          drawer: SidebarMenu(),
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/Background.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildCard(context, Icons.person, 'Profile', () {}),
+                        _buildCard(context, Icons.home, 'Home', () {}),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildCard(context, Icons.admin_panel_settings, 'Admin Page', () {}),
+                        _buildCard(context, Icons.logout, 'Logout', () {
+                          Provider.of<LoginProvider>(context, listen: false).signOut();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-        builder: (context,loginprov,child){return Scaffold(
-    appBar: AppBar(
-    backgroundColor: Colors.blueGrey,
-    foregroundColor: Colors.white,
-      title: Text('${loginprov.user?.username ?? "Guest"} Login'),
-    leading: Image.asset('assets/images/RA.png',
-    height: 10,
-    width: 10,
-    ),
-    actions: [
-    IconButton(
-    icon: Icon(Icons.account_circle_outlined),
-    onPressed: ()
-    {},
-    ),
-    Text(' Profile     '),
-    IconButton(
-    icon: Icon(Icons.account_balance_sharp),
-    onPressed: ()
-    {
-    },
-    ),
-    Text('   Contact Us   '),
-    IconButton(
-    icon: Icon(Icons.add_call),
-    onPressed: ()
-    {
-    },
-    ),
-    Text('   Home    '),
-      IconButton(
-        icon: Icon(Icons.logout),
-        onPressed: () {
-          Provider.of<LoginProvider>(context, listen: false).signOut();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        },
+  Widget _buildCard(BuildContext context, IconData icon, String title, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Container(
+          width: 300,
+          height: 270,
+          padding: EdgeInsets.all(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 40, color: Colors.blueGrey),
+              SizedBox(height: 10),
+              Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
       ),
-      Text(' Logout '),
-    ],
-    ),
-    body: Stack(
-    children: [
-    Positioned.fill(
-    child: Image.asset(
-    'assets/images/Background.png',
-    fit: BoxFit.cover,
-    ),
-    ),
-    ],
-    ),
-    );});
+    );
   }
 }
 
+class SidebarMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blueGrey),
+            child: Column(
+              children: [
+                Image.asset('assets/images/RA.png', width: 80),
+                SizedBox(height: 10),
+                Text(
+                  'Menu',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Profile'), onTap: () {}),
+            ),
+          ),
+          Opacity(
+            opacity: 1.0,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.3),
+              child: ListTile(title: const Text('HomePage'), onTap: () {}),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Screen Management'), onTap: () {}),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.3),
+              child: ListTile(title: const Text('Adminpage'), onTap: () {}),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Logout'), onTap: () {}),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
