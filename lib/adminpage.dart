@@ -11,12 +11,13 @@ class Appbar extends StatelessWidget {
         foregroundColor: Colors.white,
         title: const Text('RakshakAuth AdminPage'),
         leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          builder: (context) =>
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
         ),
       ),
       drawer: Drawer(
@@ -62,8 +63,7 @@ class Appbar extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.1),
                 child: ListTile(
                   title: const Text('Screen Management'),
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ),
             ),
@@ -73,8 +73,7 @@ class Appbar extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.3),
                 child: ListTile(
                   title: const Text('Adminpage'),
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ),
             ),
@@ -84,8 +83,7 @@ class Appbar extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.1),
                 child: ListTile(
                   title: const Text('Logout'),
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ),
             ),
@@ -101,18 +99,20 @@ class Appbar extends StatelessWidget {
             ),
           ),
           const Center(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centers tables vertically
-          crossAxisAlignment: CrossAxisAlignment.center, // Centers tables horizontally
-          children: const [
-            CrudTableWidget(), // Displayed first (on top)
-            SizedBox(height: 20), // Adds spacing between tables
-            userTableWidget(), // Displayed second (below)
-          ],
-        ),
-       )
-    ],
-    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // Centers tables vertically
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // Centers tables horizontally
+              children: const [
+                CrudTableWidget(), // Displayed first (on top)
+                SizedBox(height: 20), // Adds spacing between tables
+                userTableWidget(), // Displayed second (below)
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -141,7 +141,7 @@ class _userTableWidgetState extends State<userTableWidget> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
       ),
-      child:SingleChildScrollView(
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: const [
@@ -200,7 +200,7 @@ class _userTableWidgetState extends State<userTableWidget> {
               DataCell(
                   Switch(
                     value: user.isEnabled,
-                    onChanged: (bool value){
+                    onChanged: (bool value) {
                       setState(() {
                         user.isEnabled = value;
                       });
@@ -255,77 +255,89 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(16),
+    return SizedBox(
+        height: 350,
+        child:  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [ Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text('Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+    Switch(value: true, onChanged: (value) {
+
+    })
+  ], ),
+          DataTable(
+            columns: const [
+              DataColumn(label: Text('Screens')),
+              DataColumn(label: Text('Create')),
+              DataColumn(label: Text('Read')),
+              DataColumn(label: Text('Update')),
+              DataColumn(label: Text('Delete')),
+              DataColumn(label: Text('Enable/Disable')),
+            ],
+            rows: users.map((user) {
+              return DataRow(cells: [
+                DataCell(Text(user.Users)),
+                DataCell(Checkbox(
+                  value: user.create,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      user.create = value ?? false;
+                    });
+                  },
+                )),
+                DataCell(Checkbox(
+                  value: user.read,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      user.read = value ?? false;
+                    });
+                  },
+                )),
+                DataCell(Checkbox(
+                  value: user.update,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      user.update = value ?? false;
+                    });
+                  },
+                )),
+                DataCell(Checkbox(
+                  value: user.delete,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      user.delete = value ?? false;
+                    });
+                  },
+                )),
+                DataCell(
+                  Switch(
+                    value: user.isEnabled,
+                    onChanged: (bool value) {
+                      setState(() {
+                        user.isEnabled = value;
+                      });
+                    },
+                  ),
+                ),
+              ]);
+            }).toList(),
+          )
+        ]));
+/*    Container(
+    padding: EdgeInsets.all(16),
     decoration: BoxDecoration(
     color: Colors.white.withOpacity(0.8),
     borderRadius: BorderRadius.circular(10),
     boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
     ),
     child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columns: const [
-          DataColumn(label: Text('Screens')),
-          DataColumn(label: Text('Create')),
-          DataColumn(label: Text('Read')),
-          DataColumn(label: Text('Update')),
-          DataColumn(label: Text('Delete')),
-          DataColumn(label: Text('Enable/Disable')),
-        ],
-        rows: users.map((user) {
-          return DataRow(cells: [
-            DataCell(Text(user.Users)),
-            DataCell(Checkbox(
-              value: user.create,
-              onChanged: (bool? value) {
-                setState(() {
-                  user.create = value ?? false;
-                });
-              },
-            )),
-            DataCell(Checkbox(
-              value: user.read,
-              onChanged: (bool? value) {
-                setState(() {
-                  user.read = value ?? false;
-                });
-              },
-            )),
-            DataCell(Checkbox(
-              value: user.update,
-              onChanged: (bool? value) {
-                setState(() {
-                  user.update = value ?? false;
-                });
-              },
-            )),
-            DataCell(Checkbox(
-              value: user.delete,
-              onChanged: (bool? value) {
-                setState(() {
-                  user.delete = value ?? false;
-                });
-              },
-            )),
-            DataCell(
-              Switch(
-                value: user.isEnabled,
-                onChanged: (bool value) {
-                  setState(() {
-                    user.isEnabled = value;
-                  });
-                },
-              ),
-            ),
-          ]);
-        }).toList(),
-      ),
-    )
-    );
+    scrollDirection: Axis.horizontal,
+    child:  )
+    );*/
   }
 }
-
 
 
 void main() {
