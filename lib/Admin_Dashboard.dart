@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Loginpage1.dart';
+import 'package:untitled/landingpage.dart';
 import 'Screen_management.dart';
+import 'package:untitled/Profilepage.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -44,11 +47,36 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ],
               ),
             ),
-            ListTile(title: const Text('Profile'), onTap: () {}),
-            ListTile(title: const Text('HomePage'), onTap: () {}),
-            ListTile(title: const Text('Screen Management'), onTap: () {}),
-            ListTile(title: const Text('Adminpage'), onTap: () {}),
-            ListTile(title: const Text('Logout'), onTap: () {}),
+            ListTile(title: const Text('Profile'), onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            }),
+            ListTile(title: const Text('HomePage'), onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LandingPage()),
+              );
+            }),
+            ListTile(title: const Text('Screen Management'), onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ScreenManagement()),
+              );
+            }),
+            ListTile(title: const Text('Adminpage'), onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminDashboard()),
+              );
+            }),
+            ListTile(title: const Text('Logout'), onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            }),
           ],
         ),
       ),

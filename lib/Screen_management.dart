@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Admin_Dashboard.dart';
+import 'package:untitled/Loginpage1.dart';
+import 'package:untitled/Profilepage.dart';
+import 'package:untitled/landingpage.dart';
 
 class ScreenManagement extends StatelessWidget {
   const ScreenManagement({Key? key}) : super(key: key);
@@ -43,7 +47,12 @@ class ScreenManagement extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.1),
                 child: ListTile(
                   title: const Text('Profile'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    );
+                  },
                 ),
               ),
             ),
@@ -53,7 +62,12 @@ class ScreenManagement extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.3),
                 child: ListTile(
                   title: const Text('HomePage'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LandingPage()),
+                    );
+                  },
                 ),
               ),
             ),
@@ -63,7 +77,12 @@ class ScreenManagement extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.1),
                 child: ListTile(
                   title: const Text('Screen Management'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScreenManagement()),
+                    );
+                  },
                 ),
               ),
             ),
@@ -73,7 +92,12 @@ class ScreenManagement extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.3),
                 child: ListTile(
                   title: const Text('Adminpage'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminDashboard()),
+                    );
+                  },
                 ),
               ),
             ),
@@ -83,7 +107,12 @@ class ScreenManagement extends StatelessWidget {
                 color: Colors.blueGrey.withOpacity(0.1),
                 child: ListTile(
                   title: const Text('Logout'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
                 ),
               ),
             ),

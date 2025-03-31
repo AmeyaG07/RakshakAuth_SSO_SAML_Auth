@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/Admin_Dashboard.dart';
 import 'package:untitled/Homepage.dart';
 import 'package:untitled/loginpage1.dart';
 import 'Profilepage.dart';
+import 'Screen_management.dart';
 import 'loginprovider.dart';
 import 'Contactus.dart';
 
@@ -113,6 +115,7 @@ class LandingPage extends StatelessWidget {
           width: 300,
           height: 270,
           padding: EdgeInsets.all(12),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -169,7 +172,7 @@ class SidebarMenu extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => LandingPage()),
                   );
                 },
               ),
@@ -179,7 +182,12 @@ class SidebarMenu extends StatelessWidget {
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Screen Management'), onTap: () {}),
+              child: ListTile(title: const Text('Screen Management'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScreenManagement()),
+                );
+              }),
             ),
           ),
           Opacity(
@@ -200,14 +208,24 @@ class SidebarMenu extends StatelessWidget {
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(title: const Text('Adminpage'), onTap: () {}),
+              child: ListTile(title: const Text('Adminpage'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminDashboard()),
+                );
+              }),
             ),
           ),
           Opacity(
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Logout'), onTap: () {}),
+              child: ListTile(title: const Text('Logout'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              }),
             ),
           ),
         ],

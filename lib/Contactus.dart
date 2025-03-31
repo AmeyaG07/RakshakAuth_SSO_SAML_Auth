@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:untitled/landingpage.dart';
+
+import 'Admin_Dashboard.dart';
+import 'Loginpage1.dart';
+import 'Profilepage.dart';
+import 'Screen_management.dart';
 
 class ContactPage extends StatelessWidget {
   @override
@@ -24,7 +30,7 @@ class ContactPage extends StatelessWidget {
               // Left Side Contact Info
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center, // Moves text downward
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     'Contact Us',
@@ -107,6 +113,7 @@ class ContactPage extends StatelessWidget {
           ),
         ),
       ),
+          SidebarMenu(),
         ],
       ),
     );
@@ -152,6 +159,110 @@ class ContactInfoRow extends StatelessWidget {
         const SizedBox(width: 10),
         Text(text, style: const TextStyle(fontSize: 16, color: Colors.white70)),
       ],
+    );
+  }
+}
+
+class SidebarMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blueGrey),
+            child: Column(
+              children: [
+                Image.asset('assets/images/RA.png', width: 80),
+                SizedBox(height: 10),
+                Text(
+                  'Menu',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Profile'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }
+              ),
+            ),
+          ),
+          Opacity(
+            opacity: 1.0,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.3),
+              child: ListTile(
+                title: const Text('HomePage'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LandingPage()),
+                  );
+                },
+              ),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Screen Management'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScreenManagement()),
+                );
+              }),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Contact Us'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactPage()),
+                );
+
+
+              }),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.3),
+              child: ListTile(title: const Text('Adminpage'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminDashboard()),
+                );
+              }),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Logout'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              }),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
