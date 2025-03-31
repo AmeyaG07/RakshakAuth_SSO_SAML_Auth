@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'adminpage.dart';
+import 'Screen_management.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _AppbarState extends State<Appbar> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        title: const Text('RakshakAuth User Screen Management'),
+        title: const Text('RakshakAuth Admin Dashboard'),
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu),
@@ -68,6 +68,7 @@ class _AppbarState extends State<Appbar> {
               ],
             ),
           ),
+          userTableWidget(),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {

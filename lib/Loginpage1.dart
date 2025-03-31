@@ -245,22 +245,16 @@ class SidebarMenu extends StatelessWidget {
             ),
           ),
           Opacity(
-            opacity: 1.0,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1), // Background color with opacity
-              child: ListTile(
-                title: const Text('LoginPage'),
-                onTap: () {},
-              ),
-            ),
-          ),
-          Opacity(
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.3),
               child: ListTile(
                 title: const Text('HomePage'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const AlertDialog()),
+                  );
+                },
               ),
             ),
           ),
@@ -282,6 +276,7 @@ class SidebarMenu extends StatelessWidget {
               child: ListTile(
                 title: const Text('Adminpage'),
                 onTap: () {
+
                 },
               ),
             ),

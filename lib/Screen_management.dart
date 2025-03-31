@@ -9,7 +9,7 @@ class Appbar extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        title: const Text('RakshakAuth AdminPage'),
+        title: const Text('RakshakAuth User Screen Management'),
         leading: Builder(
           builder: (context) =>
               IconButton(
@@ -90,29 +90,29 @@ class Appbar extends StatelessWidget {
           ],
         ),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/Background.png',
-              fit: BoxFit.cover,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/Background.png',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // Centers tables vertically
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // Centers tables horizontally
-              children: const [
-                CrudTableWidget(), // Displayed first (on top)
-                SizedBox(height: 20), // Adds spacing between tables
-                userTableWidget(), // Displayed second (below)
-              ],
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(child: CrudTableWidget()),
+                ],
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
+
     );
   }
 }
@@ -126,96 +126,52 @@ class userTableWidget extends StatefulWidget {
 
 class _userTableWidgetState extends State<userTableWidget> {
   final List<User> users = [
-    User(Users: "Admin", email: "john@example.com"),
-    User(Users: "Manager", email: "jane@example.com"),
-    User(Users: "TeamLead", email: "alice@example.com"),
-    User(Users: "Employee", email: "john@example.com"),
+    User(Users: "User_1", email: "john@example.com"),
+    User(Users: "User_2", email: "jane@example.com"),
+    User(Users: "User_3", email: "alice@example.com"),
+    User(Users: "User_4", email: "john@example.com"),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: const [
-            DataColumn(label: Text('Users')),
-            DataColumn(label: Text('Homepage')),
-            DataColumn(label: Text('Screen Management')),
-            DataColumn(label: Text('Admin Page')),
-            DataColumn(label: Text('Product 1')),
-            DataColumn(label: Text('Product2')),
-            DataColumn(label: Text('Enable/Disable')),
-          ],
-          rows: users.map((user) {
-            return DataRow(cells: [
-              DataCell(Text(user.Users)),
-              DataCell(Checkbox(
-                value: user.create,
-                onChanged: (bool? value) {
-                  setState(() {
-                    user.create = value ?? false;
-                  });
+    return SizedBox(
+      height: 600,
+      width: 1500,
+      child: DataTable(
+        columnSpacing: 20,
+        columns: const [
+          DataColumn(label: Text('Users')),
+          DataColumn(label: Text('Emails')),
+          DataColumn(label: Text('Update')),
+          DataColumn(label: Text('Delete')),
+        ],
+        rows: users.map((user) {
+          return DataRow(cells: [
+            DataCell(Text(user.Users)),
+            DataCell(Text(user.email)),
+            DataCell(
+              IconButton(
+                icon: Icon(Icons.edit),
+                color: Colors.grey,
+                onPressed: () {
+
                 },
-              )),
-              DataCell(Checkbox(
-                value: user.read,
-                onChanged: (bool? value) {
-                  setState(() {
-                    user.read = value ?? false;
-                  });
-                },
-              )),
-              DataCell(Checkbox(
-                value: user.update,
-                onChanged: (bool? value) {
-                  setState(() {
-                    user.update = value ?? false;
-                  });
-                },
-              )),
-              DataCell(Checkbox(
-                value: user.delete,
-                onChanged: (bool? value) {
-                  setState(() {
-                    user.delete = value ?? false;
-                  });
-                },
-              )
               ),
-              DataCell(Checkbox(
-                value: user.update,
-                onChanged: (bool? value) {
-                  setState(() {
-                    user.update = value ?? false;
-                  });
-                },
-              )),
-              DataCell(
-                  Switch(
-                    value: user.isEnabled,
-                    onChanged: (bool value) {
-                      setState(() {
-                        user.isEnabled = value;
-                      });
-                    },
-                  )
-              )
-            ]
-            );
-          }
-          ).toList(),
-        ),
+            ),
+            DataCell(
+              IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                onPressed: () {},
+              ),
+            ),
+          ]);
+        }).toList(),
       ),
     );
   }
 }
+
 
 class User {
   final String Users;
