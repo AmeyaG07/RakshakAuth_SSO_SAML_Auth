@@ -56,9 +56,7 @@ class LandingPage extends StatelessWidget {
                 icon: Icon(Icons.logout),
                 onPressed: () {
                   Provider.of<LoginProvider>(context, listen: false).signOut();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
+                  confirmbox(context);
                 },
               ),
               Text('   Logout    '),
@@ -80,12 +78,8 @@ class LandingPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.person, 'Profile', () {}),
-                        _buildCard(context, Icons.home, 'Home', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
+                        _buildCard(context, Icons.card_travel, 'Product 1', () {}),
+                        _buildCard(context, Icons.card_travel, 'Product 2', () {
                         }),
                       ],
                     ),
@@ -93,8 +87,8 @@ class LandingPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.admin_panel_settings, 'Admin Page', () {}),
-                        _buildCard(context, Icons.logout, 'Logout', () {
+                        _buildCard(context, Icons.card_travel, 'Product 3', () {}),
+                        _buildCard(context, Icons.card_travel, 'Product 4', () {
                           Provider.of<LoginProvider>(context, listen: false).signOut();
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -137,7 +131,44 @@ class LandingPage extends StatelessWidget {
   }
 }
 
-class SidebarMenu extends StatelessWidget {
+class SidebarMenu extends StatefulWidget {
+  const SidebarMenu({Key? key});
+
+  @override
+  State<SidebarMenu> createState() => _SidebarMenu();
+}
+
+class _SidebarMenu extends State<SidebarMenu> {
+
+  void confirmbox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+        title: Text('Logout'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => { logout(context)
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void logout(BuildContext context){
+    Navigator.pop(context, 'OK');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -161,12 +192,14 @@ class SidebarMenu extends StatelessWidget {
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Profile'), onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }
+              child: ListTile(
+                title: const Text('Profile'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
               ),
             ),
           ),
@@ -189,50 +222,43 @@ class SidebarMenu extends StatelessWidget {
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Screen Management'), onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ScreenManagement()),
-                );
-              }),
+              child: ListTile(
+                title: const Text('Screen Management'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ScreenManagement()),
+                  );
+                },
+              ),
             ),
           ),
           Opacity(
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Contact Us'), onTap: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => ContactPage()),
-    );
-
-
-              }),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(title: const Text('Adminpage'), onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AdminDashboard()),
-                );
-              }),
+              child: ListTile(
+                title: const Text('Contact Us'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ContactPage()),
+                  );
+                },
+              ),
             ),
           ),
           Opacity(
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Logout'), onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              }),
+              child: ListTile(
+                title: const Text('Logout'),
+                onTap: () {
+                  confirmbox(context);
+
+                },
+              ),
             ),
           ),
         ],
@@ -240,3 +266,4 @@ class SidebarMenu extends StatelessWidget {
     );
   }
 }
+
