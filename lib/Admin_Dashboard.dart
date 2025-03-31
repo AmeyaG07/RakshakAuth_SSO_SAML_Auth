@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'Screen_management.dart';
 
-import 'adminpage.dart';
-
-class Appbar extends StatefulWidget {
-  const Appbar({Key? key}) : super(key: key);
+class AdminDashboard extends StatefulWidget {
+  const AdminDashboard({Key? key}) : super(key: key);
 
   @override
-  _AppbarState createState() => _AppbarState();
+  _AdminDashboardState createState() => _AdminDashboardState();
 }
 
-class _AppbarState extends State<Appbar> {
+class _AdminDashboardState extends State<AdminDashboard> {
   bool isUserEnabled = false;
 
   @override
@@ -18,7 +17,7 @@ class _AppbarState extends State<Appbar> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        title: const Text('RakshakAuth User Screen Management'),
+        title: const Text('RakshakAuth Admin Dashboard'),
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu),
@@ -68,6 +67,7 @@ class _AppbarState extends State<Appbar> {
               ],
             ),
           ),
+          userTableWidget(),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
@@ -92,11 +92,4 @@ class _AppbarState extends State<Appbar> {
       child: Icon(Icons.add),),
     );
   }
-}
-
-
-void main() {
-  runApp(MaterialApp(
-    home: Appbar(),
-  ));
 }

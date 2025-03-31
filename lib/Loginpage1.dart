@@ -4,6 +4,7 @@ import 'package:untitled/landingpage.dart';
 import 'package:untitled/loginprovider.dart';
 import 'package:untitled/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:untitled/Admin_Dashboard.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -24,14 +25,6 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
         title: const Text('RakshakAuth Login'),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.login),
@@ -53,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
           Text('   Signup       '),
         ],
       ),
-      drawer: SidebarMenu(),
       body: Stack(
         children: [
           Positioned.fill(
@@ -178,6 +170,14 @@ class Logincard extends StatelessWidget {
                   onPressed: () async {
                     String username = usernameController.text;
                     String password = passwordController.text;
+
+                    if (username == "admin" && password == "admin") {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const AdminDashboard()),
+                      );
+                      return;
+                    }
+
                     var userData = await db.read(username);
 
                     if (userData != null && userData['password'] == password) {
@@ -186,20 +186,20 @@ class Logincard extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const LandingPage()),
                       );
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("Login Failed"),
-                          content: const Text("Invalid Username or Password"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text("Close"),
-                            ),
-                          ],
-                        ),
-                      );
+                    } else {showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Login Failed"),
+                        content: const Text("Invalid Username or Password"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Close"),
+                          ),
+                        ],
+                      ),
+                    );
+
                     }
                   },
                   child: const Text("Login"),
@@ -222,81 +222,6 @@ class Logincard extends StatelessWidget {
     );
   }
 }
-class SidebarMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blueGrey),
-            child: Column(
-              children: [
-                Image.asset('assets/images/RA.png', width: 80),
-                SizedBox(height: 10),
-                Text(
-                  'Menu',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ],
-            ),
-          ),
-          Opacity(
-            opacity: 1.0,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1), // Background color with opacity
-              child: ListTile(
-                title: const Text('LoginPage'),
-                onTap: () {},
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(
-                title: const Text('HomePage'),
-                onTap: () {},
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Screen Management'),
-                onTap: () {
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(
-                title: const Text('Adminpage'),
-                onTap: () {
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Logout'),
-                onTap: () {
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+
+
+

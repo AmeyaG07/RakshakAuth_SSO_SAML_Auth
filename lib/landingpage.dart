@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/Homepage.dart'; // Import Homepage
+import 'package:untitled/Homepage.dart';
 import 'package:untitled/loginpage1.dart';
 import 'Profilepage.dart';
 import 'loginprovider.dart';
@@ -52,7 +52,7 @@ class LandingPage extends StatelessWidget {
                   );
                 },
               ),
-              Text(' Logout '),
+              Text('   Logout    '),
             ],
           ),
           drawer: SidebarMenu(),
