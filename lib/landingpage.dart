@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/Homepage.dart'; // Import Homepage
 import 'package:untitled/loginpage1.dart';
+import 'Profilepage.dart';
 import 'loginprovider.dart';
+import 'Contactus.dart';
+
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key});
@@ -26,7 +30,16 @@ class LandingPage extends StatelessWidget {
             actions: [
               IconButton(icon: Icon(Icons.account_circle_outlined), onPressed: () {}),
               Text(' Profile     '),
-              IconButton(icon: Icon(Icons.account_balance_sharp), onPressed: () {}),
+              IconButton(
+                icon: Icon(Icons.account_balance_sharp),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ContactPage()),
+                  );
+                },
+              ),
+
               Text('   Contact Us   '),
               IconButton(icon: Icon(Icons.add_call), onPressed: () {}),
               Text('   Home    '),
@@ -59,7 +72,12 @@ class LandingPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildCard(context, Icons.person, 'Profile', () {}),
-                        _buildCard(context, Icons.home, 'Home', () {}),
+                        _buildCard(context, Icons.home, 'Home', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          );
+                        }),
                       ],
                     ),
                     SizedBox(height: 20),
@@ -133,14 +151,28 @@ class SidebarMenu extends StatelessWidget {
             opacity: 0.6,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(title: const Text('Profile'), onTap: () {}),
+              child: ListTile(title: const Text('Profile'), onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }
+              ),
             ),
           ),
           Opacity(
             opacity: 1.0,
             child: Container(
               color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(title: const Text('HomePage'), onTap: () {}),
+              child: ListTile(
+                title: const Text('HomePage'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
+              ),
             ),
           ),
           Opacity(
@@ -148,6 +180,20 @@ class SidebarMenu extends StatelessWidget {
             child: Container(
               color: Colors.blueGrey.withOpacity(0.1),
               child: ListTile(title: const Text('Screen Management'), onTap: () {}),
+            ),
+          ),
+          Opacity(
+            opacity: 0.6,
+            child: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              child: ListTile(title: const Text('Contact Us'), onTap: () {
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const ContactPage()),
+    );
+
+
+              }),
             ),
           ),
           Opacity(
