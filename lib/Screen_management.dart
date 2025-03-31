@@ -183,7 +183,6 @@ class _userTableWidgetState extends State<userTableWidget> {
                 icon: Icon(Icons.edit),
                 color: Colors.grey,
                 onPressed: () {
-
                 },
               ),
             ),

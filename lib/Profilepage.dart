@@ -85,8 +85,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 children: [
                   Container(
                     height: 160,
-                    width: double.infinity,
-                    color: Colors.lightBlue[100],
+                    child: Image.asset(
+                      'assets/images/Background.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Positioned(
                     right: 16,

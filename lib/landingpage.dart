@@ -30,10 +30,15 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             actions: [
-              IconButton(icon: Icon(Icons.account_circle_outlined), onPressed: () {}),
+              IconButton(icon: Icon(Icons.account_circle_outlined), onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }),
               Text(' Profile     '),
               IconButton(
-                icon: Icon(Icons.account_balance_sharp),
+                icon: Icon(Icons.add_ic_call_outlined),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -43,7 +48,9 @@ class LandingPage extends StatelessWidget {
               ),
 
               Text('   Contact Us   '),
-              IconButton(icon: Icon(Icons.add_call), onPressed: () {}),
+              IconButton(icon: Icon(Icons.home), onPressed: () {
+
+              }),
               Text('   Home    '),
               IconButton(
                 icon: Icon(Icons.logout),
