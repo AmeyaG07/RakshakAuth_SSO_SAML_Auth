@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'Screen_management.dart';
 
-class Appbar extends StatefulWidget {
-  const Appbar({Key? key}) : super(key: key);
+class AdminDashboard extends StatefulWidget {
+  const AdminDashboard({Key? key}) : super(key: key);
 
   @override
-  _AppbarState createState() => _AppbarState();
+  _AdminDashboardState createState() => _AdminDashboardState();
 }
 
-class _AppbarState extends State<Appbar> {
+class _AdminDashboardState extends State<AdminDashboard> {
   bool isUserEnabled = false;
 
   @override
@@ -93,11 +92,4 @@ class _AppbarState extends State<Appbar> {
       child: Icon(Icons.add),),
     );
   }
-}
-
-
-void main() {
-  runApp(MaterialApp(
-    home: Appbar(),
-  ));
 }

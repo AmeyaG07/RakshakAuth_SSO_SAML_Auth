@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Appbar extends StatelessWidget {
-  const Appbar({Key? key}) : super(key: key);
+class ScreenManagement extends StatelessWidget {
+  const ScreenManagement({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -293,11 +293,4 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
     child:  )
     );*/
   }
-}
-
-
-void main() {
-  runApp(MaterialApp(
-    home: Appbar(),
-  ));
 }

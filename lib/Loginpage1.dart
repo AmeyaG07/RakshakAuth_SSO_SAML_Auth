@@ -4,6 +4,7 @@ import 'package:untitled/landingpage.dart';
 import 'package:untitled/loginprovider.dart';
 import 'package:untitled/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:untitled/Admin_Dashboard.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -155,6 +156,14 @@ class Logincard extends StatelessWidget {
                   onPressed: () async {
                     String username = usernameController.text;
                     String password = passwordController.text;
+
+                    if (username == "admin" && password == "admin") {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const AdminDashboard()),
+                      );
+                      return;
+                    }
+
                     var userData = await db.read(username);
 
                     if (userData != null && userData['password'] == password) {
