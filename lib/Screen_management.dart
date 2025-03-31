@@ -202,6 +202,7 @@ class CrudTableWidget extends StatefulWidget {
 }
 
 class _CrudTableWidgetState extends State<CrudTableWidget> {
+  bool isEmailEnabled = false;
   final List<User> users = [
     User(Users: "HomeScreen", email: "john@example.com"),
     User(Users: "LandingPage", email: "jane@example.com"),
@@ -219,10 +220,14 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
     Text('Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-    Switch(value: true, onChanged: (value) {
-
-    })
-  ], ),
+    Switch(value:isEmailEnabled , onChanged: (value) {
+      setState(() {
+        isEmailEnabled = value; // Toggle state
+      });
+    },
+    )
+  ],
+        ),
           DataTable(
             columns: const [
               DataColumn(label: Text('Screens')),
