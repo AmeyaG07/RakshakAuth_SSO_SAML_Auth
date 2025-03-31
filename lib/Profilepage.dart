@@ -17,14 +17,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
-  final TextEditingController firstNameController = TextEditingController(text: 'Clement');
-  final TextEditingController lastNameController = TextEditingController(text: 'Governor');
-  final TextEditingController phoneController = TextEditingController(text: '+233');
+  final TextEditingController firstNameController = TextEditingController(text: 'Prachi');
+  final TextEditingController lastNameController = TextEditingController(text: 'Ingale');
+  final TextEditingController phoneController = TextEditingController(text: '+91');
   final TextEditingController emailController = TextEditingController(text: 'ingaleprachi@gmail.com');
-  final TextEditingController cityController = TextEditingController(text: 'Accra');
-  final TextEditingController stateController = TextEditingController(text: 'Greater Accra');
-  final TextEditingController postcodeController = TextEditingController(text: '38680');
-  final TextEditingController countryController = TextEditingController(text: 'Ghana');
+  final TextEditingController cityController = TextEditingController(text: 'Nagpur');
+  final TextEditingController stateController = TextEditingController(text: 'Maharashtra');
+  final TextEditingController postcodeController = TextEditingController(text: '440024');
+  final TextEditingController countryController = TextEditingController(text: 'India');
 
   TabController? _tabController;
 
@@ -45,7 +45,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: [Positioned.fill(
+          child: Image.asset(
+            'assets/images/Background.png',
+            fit: BoxFit.cover,
+          ),
+        ),
           Column(
             children: [
               // App Bar with Profile text and icons
@@ -133,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                 Tab(text: 'Account Setting'),
                                 Tab(text: 'Company Setting'),
                                 Tab(text: 'Documents'),
-                                Tab(text: 'Billing'),
+                                Tab(text: 'Activity'),
                                 Tab(text: 'Notifications'),
                               ],
                             ),
@@ -147,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                 _buildFormContent(),
                                 Center(child: Text('Company Setting Content')),
                                 Center(child: Text('Documents Content')),
-                                Center(child: Text('Billing Content')),
+                                Center(child: Text('Project Content')),
                                 Center(child: Text('Notifications Content')),
                               ],
                             ),
@@ -179,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     children: [
                       SizedBox(height: 40), // Space for avatar
                       Text(
-                        'Clement Governor',
+                        'Prachi Ingale',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -187,18 +192,18 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Ex - service man',
+                        'Assisstant Manager',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
                         ),
                       ),
                       Divider(height: 24),
-                      _buildStatRow('Opportunities Applied', '27', Colors.green),
+                      _buildStatRow('Active Projects', '7', Colors.green),
                       Divider(height: 16),
-                      _buildStatRow('Opportunities Won', '17', Colors.amber),
+                      _buildStatRow('Allotted Projects', '12', Colors.amber),
                       Divider(height: 16),
-                      _buildStatRow('Current Opportunities', '6', Colors.blue),
+                      _buildStatRow('Finished Projects', '4', Colors.blue),
                       SizedBox(height: 16),
                       OutlinedButton(
                         onPressed: () {},
@@ -225,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           children: [
                             Expanded(
                               child: Text(
-                                'https://app.clementgover...',
+                                'https://app.ingaleprachi...',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.blue,

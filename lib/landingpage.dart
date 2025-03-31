@@ -35,7 +35,7 @@ class LandingPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ContactPage()),
+                    MaterialPageRoute(builder: (context) => ContactPage()),
                   );
                 },
               ),
@@ -189,7 +189,7 @@ class SidebarMenu extends StatelessWidget {
               child: ListTile(title: const Text('Contact Us'), onTap: () {
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const ContactPage()),
+    MaterialPageRoute(builder: (context) => ContactPage()),
     );
 
 

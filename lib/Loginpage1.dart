@@ -222,8 +222,6 @@ class Logincard extends StatelessWidget {
     );
   }
 }
-
-
 class SidebarMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

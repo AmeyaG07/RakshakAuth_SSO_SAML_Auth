@@ -1,246 +1,157 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class ContactPage extends StatelessWidget {
-  const ContactPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        primaryColor: const Color(0xFFF5F5F5),
-      ),
-      home: const ContactScreen(),
-    );
-  }
-}
-
-class ContactScreen extends StatelessWidget {
-  const ContactScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.lightBlueAccent,
-        ),
-        child: SafeArea(
-          child: Column(
+      body:Stack(
+        children: [
+      // Background Image
+      Positioned.fill(
+      child: Image.asset(
+        'assets/images/Background.png',
+        fit: BoxFit.cover,
+      ),
+    ),
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // App Bar
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.healing, color: Colors.amber[300], size: 40),
-                    Row(
-                      children: const [
-                        NavItem(title: 'Mobile App'),
-                        SizedBox(width: 20),
-                        NavItem(title: 'Tandvård'),
-                        SizedBox(width: 20),
-                        NavItem(title: 'Om Oss'),
-                        SizedBox(width: 20),
-                        NavItem(title: 'Blog'),
-                        SizedBox(width: 20),
-                        Icon(Icons.headset_mic, color: Colors.amber, size: 30),
-                      ],
+              // Left Side Contact Info
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center, // Moves text downward
+                children: [
+                  const Text(
+                    'Contact Us',
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text('Get in touch with RakshakAuth ', style: TextStyle(fontSize: 18, color: Colors.white70)),
+                  const SizedBox(height: 40),
+
+                  ContactInfoRow(icon: Icons.location_on, text: 'India'),
+                  const SizedBox(height: 20),
+                  ContactInfoRow(icon: Icons.email, text: 'ingaleprachi133@gmail.com'),
+                  const SizedBox(height: 20),
+                  ContactInfoRow(icon: Icons.phone, text: '(+91) 9370932686'),
+                ],
+              ),
+
+              // Right Side Contact Form
+              Container(
+                width: 400, // Adjust card width
+                padding: const EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-              ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // Shrinks card to fit content
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Contact Us',
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    const SizedBox(height: 20),
 
-              // Main Content
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: Row(
-                    children: [
-                      // Left side - Contact Info
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Contact Us',
-                              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              'RakshakAuth tagline',
-                              style: TextStyle(fontSize: 16, color: Colors.white70),
-                            ),
-                            const SizedBox(height: 50),
-                            const ContactInfoItem(icon: Icons.location_on, title: 'Address', detail: 'India'),
-                            const SizedBox(height: 30),
-                            const ContactInfoItem(icon: Icons.email, title: 'Email', detail: 'ingaleprachi133@gmail.com'),
-                            const SizedBox(height: 30),
-                            const ContactInfoItem(icon: Icons.phone, title: 'Phone', detail: '(+91) 9370932686'),
-                          ],
-                        ),
-                      ),
+                    // Name Field
+                    const Text('Name', style: TextStyle(fontSize: 16, color: Colors.black)),
+                    const SizedBox(height: 5),
+                    CustomTextField(hintText: 'Enter your full name'),
 
-                      // Right side - Contact Form
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 40),
-                          padding: const EdgeInsets.all(40),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF60A5FA).darker(0.1),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 15,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
+                    // Email Field
+                    const SizedBox(height: 15),
+                    const Text('Email', style: TextStyle(fontSize: 16, color: Colors.black)),
+                    const SizedBox(height: 5),
+                    CustomTextField(hintText: 'example@gmail.com'),
+
+                    // Details Field
+                    const SizedBox(height: 15),
+                    const Text('Details', style: TextStyle(fontSize: 16, color: Colors.black)),
+                    const SizedBox(height: 5),
+                    CustomTextField(hintText: 'Enter your problem details', maxLines: 3),
+
+                    // Send Button
+                    const SizedBox(height: 25),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF60A5FA),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Contact Us',
-                                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
-                              ),
-                              const SizedBox(height: 30),
-
-                              // Name field
-                              const Text('Name', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              const SizedBox(height: 10),
-                              const CustomFormField(placeholder: 'Enter your full name'),
-                              const SizedBox(height: 25),
-
-                              // Email field
-                              const Text('Email', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              const SizedBox(height: 10),
-                              const CustomFormField(placeholder: 'LoremIpsum@gmail.com'),
-                              const SizedBox(height: 25),
-
-                              // Details field
-                              const Text('Details', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              const SizedBox(height: 10),
-                              const CustomFormField(placeholder: 'Enter your problem details'),
-                              const SizedBox(height: 30),
-
-                              // Send button
-                              Center(
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: const Color(0xFF60A5FA),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                                  ),
-                                  child: const Text('Send Message', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                                ),
-                              ),
-
-                              // Social icons
-                              const SizedBox(height: 30),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  SocialIcon(icon: FontAwesomeIcons.youtube),
-                                  SizedBox(width: 15),
-                                  SocialIcon(icon: FontAwesomeIcons.instagram),
-                                  SizedBox(width: 15),
-                                  SocialIcon(icon: FontAwesomeIcons.linkedin),
-                                  SizedBox(width: 15),
-                                  SocialIcon(icon: FontAwesomeIcons.facebook),
-                                ],
-                              ),
-                            ],
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                         ),
+                        child: const Text('Send Message', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class NavItem extends StatelessWidget {
-  final String title;
-  const NavItem({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500));
-  }
-}
-
-class ContactInfoItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String detail;
-
-  const ContactInfoItem({Key? key, required this.icon, required this.title, required this.detail}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.amber[300], size: 24),
-        const SizedBox(width: 15),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500)),
-            Text(detail, style: const TextStyle(fontSize: 14, color: Colors.white70)),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class CustomFormField extends StatelessWidget {
-  final String placeholder;
-  const CustomFormField({Key? key, required this.placeholder}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: placeholder,
-        hintStyle: const TextStyle(color: Colors.white54),
-        border: InputBorder.none,
+        ],
       ),
     );
   }
 }
 
-class SocialIcon extends StatelessWidget {
-  final IconData icon;
-  const SocialIcon({Key? key, required this.icon}) : super(key: key);
+// Widget for text fields
+class CustomTextField extends StatelessWidget {
+  final String hintText;
+  final int maxLines;
+
+  const CustomTextField({required this.hintText, this.maxLines = 1, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Icon(icon, color: Colors.white, size: 20);
+    return TextField(
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Colors.grey),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey.shade300)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey.shade300)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Colors.blue)),
+      ),
+    );
   }
 }
 
-// Extension to create darker shades of a color
-extension ColorExtension on Color {
-  Color darker([double amount = 0.1]) {
-    return HSLColor.fromColor(this).withLightness((HSLColor.fromColor(this).lightness - amount).clamp(0.0, 1.0)).toColor();
+// Widget for left-side contact info
+class ContactInfoRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const ContactInfoRow({required this.icon, required this.text, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white70, size: 22),
+        const SizedBox(width: 10),
+        Text(text, style: const TextStyle(fontSize: 16, color: Colors.white70)),
+      ],
+    );
   }
 }
