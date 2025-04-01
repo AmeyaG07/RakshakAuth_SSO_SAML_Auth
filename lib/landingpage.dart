@@ -20,7 +20,7 @@ class LandingPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.blueGrey,
             foregroundColor: Colors.white,
-            title: Text('${loginprov.user?.username ?? "Admin"} Login'),
+            title: Text('${loginprov.currentuser?.username ?? "Admin"} Login'),
             leading: Builder(
               builder: (context) => IconButton(
                 icon: Icon(Icons.menu),
