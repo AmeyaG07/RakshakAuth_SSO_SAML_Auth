@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'Contactus.dart';
+import 'Loginpage1.dart';
+
 class ProfileScreen extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
@@ -41,9 +44,84 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     super.dispose();
   }
 
+  void confirmbox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+        title: Text('Logout'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => { logout(context)
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void logout(BuildContext context){
+    Navigator.pop(context, 'OK');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+        foregroundColor: Colors.white,
+        title: Text('Contact RakshakAuth'),
+        leading: Builder(
+          builder:
+              (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
+          ),
+          Text(' Profile     '),
+          IconButton(
+            icon: Icon(Icons.add_ic_call_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactPage()),
+              );
+            },
+          ),
+
+          Text('   Contact Us   '),
+          IconButton(icon: Icon(Icons.home), onPressed: () {}),
+          Text('   Home    '),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              confirmbox(context);
+            },
+          ),
+          Text('   Logout    '),
+        ],
+      ),
       body: Stack(
         children: [Positioned.fill(
           child: Image.asset(
@@ -53,34 +131,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         ),
           Column(
             children: [
-              // App Bar with Profile text and icons
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Profile',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.tune_outlined),
-                        SizedBox(width: 8),
-                        Icon(Icons.compare_arrows),
-                        SizedBox(width: 8),
-                        Icon(Icons.keyboard_double_arrow_right),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // Cover Photo
               Stack(
                 children: [
                   Container(

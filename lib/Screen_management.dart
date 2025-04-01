@@ -4,8 +4,43 @@ import 'package:untitled/Loginpage1.dart';
 import 'package:untitled/Profilepage.dart';
 import 'package:untitled/landingpage.dart';
 
-class ScreenManagement extends StatelessWidget {
-  const ScreenManagement({Key? key}) : super(key: key);
+class ScreenManagement extends StatefulWidget {
+  const ScreenManagement({Key? key});
+
+  @override
+  State<ScreenManagement> createState() => _ScreenManagement();
+}
+
+class _ScreenManagement extends State<ScreenManagement> {
+
+  void confirmbox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+        title: Text('Logout'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => { logout(context)
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void logout(BuildContext context){
+    Navigator.pop(context, 'OK');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +143,7 @@ class ScreenManagement extends StatelessWidget {
                 child: ListTile(
                   title: const Text('Logout'),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
+                    confirmbox(context);
                   },
                 ),
               ),
@@ -161,6 +193,26 @@ class _userTableWidgetState extends State<userTableWidget> {
     User(Users: "User_4", email: "john@example.com"),
   ];
 
+  void ShowDialogBox(){
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Add User'),
+          content: CrudTableWidget(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -183,6 +235,7 @@ class _userTableWidgetState extends State<userTableWidget> {
                 icon: Icon(Icons.edit),
                 color: Colors.grey,
                 onPressed: () {
+                  ShowDialogBox();
                 },
               ),
             ),
@@ -190,7 +243,9 @@ class _userTableWidgetState extends State<userTableWidget> {
               IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.red,
-                onPressed: () {},
+                onPressed: () {
+                  ShowDialogBox();
+                },
               ),
             ),
           ]);
@@ -263,7 +318,6 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
               DataColumn(label: Text('Read')),
               DataColumn(label: Text('Update')),
               DataColumn(label: Text('Delete')),
-              DataColumn(label: Text('Enable/Disable')),
             ],
             rows: users.map((user) {
               return DataRow(cells: [
@@ -300,16 +354,6 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
                     });
                   },
                 )),
-                DataCell(
-                  Switch(
-                    value: user.isEnabled,
-                    onChanged: (bool value) {
-                      setState(() {
-                        user.isEnabled = value;
-                      });
-                    },
-                  ),
-                ),
               ]);
             }).toList(),
           )

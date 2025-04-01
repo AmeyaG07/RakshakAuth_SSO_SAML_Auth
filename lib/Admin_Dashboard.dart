@@ -11,9 +11,58 @@ class AdminDashboard extends StatefulWidget {
   _AdminDashboardState createState() => _AdminDashboardState();
 }
 
+void confirmbox(BuildContext context) {
+  showDialog(
+    context: context,
+    builder:
+        (_) => AlertDialog(
+      title: Text('Logout'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => { logout(context)
+          },
+          child: const Text('Yes'),
+        ),
+      ],
+    ),
+  );
+}
+
+void logout(BuildContext context){
+  Navigator.pop(context, 'OK');
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => LoginPage()),
+  );
+}
+
+
+
 class _AdminDashboardState extends State<AdminDashboard> {
   bool isUserEnabled = false;
-
+void ShowDialogBox(bool isEditable){
+  showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: isEditable?Text('Edit User') :Text('Add User'),
+        content: CrudTableWidget(),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      )
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,10 +121,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               );
             }),
             ListTile(title: const Text('Logout'), onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
+              confirmbox(context);
             }),
           ],
         ),
@@ -99,25 +145,138 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text('Add User'),
-              content: CrudTableWidget(),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-              ],
-            )
-        );
+        ShowDialogBox(false);
       },
       child: Icon(Icons.add),),
     );
   }
+}
+
+class userTableWidget extends StatefulWidget {
+  const userTableWidget({Key? key}) : super(key: key);
+
+  @override
+  _userTableWidgetState createState() => _userTableWidgetState();
+}
+
+class _userTableWidgetState extends State<userTableWidget> {
+  final List<User> users = [
+    User(Users: "User_1", email: "john@example.com"),
+    User(Users: "User_2", email: "jane@example.com"),
+    User(Users: "User_3", email: "alice@example.com"),
+    User(Users: "User_4", email: "john@example.com"),
+  ];
+
+  void ShowDialogBox(bool isEditable){
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: isEditable?Text('Edit User') :Text('Add User'),
+          content: CrudTableWidget(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        )
+    );
+  }
+
+
+  void confirmdeletebox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+        title: Text('Confirm Delete '),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => { logout(context)
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void logout(BuildContext context){
+    Navigator.pop(context, 'OK');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AdminDashboard()),
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 600,
+      width: 1500,
+      child: DataTable(
+        columnSpacing: 20,
+        columns: const [
+          DataColumn(label: Text('Users')),
+          DataColumn(label: Text('Emails')),
+          DataColumn(label: Text('Update')),
+          DataColumn(label: Text('Delete')),
+        ],
+        rows: users.map((user) {
+          return DataRow(cells: [
+            DataCell(Text(user.Users)),
+            DataCell(Text(user.email)),
+            DataCell(
+              IconButton(
+                icon: Icon(Icons.edit),
+                color: Colors.grey,
+                onPressed: () {
+                  ShowDialogBox(true);
+                },
+              ),
+            ),
+            DataCell(
+              IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                onPressed: () {
+                  confirmdeletebox(context);
+                },
+              ),
+            ),
+          ]);
+        }).toList(),
+      ),
+    );
+  }
+}
+
+
+class User {
+  final String Users;
+  final String email;
+  bool create;
+  bool read;
+  bool update;
+  bool delete;
+  bool isEnabled;
+
+  User({
+    required this.Users,
+    required this.email,
+    this.create = false,
+    this.read = false,
+    this.update = false,
+    this.delete = false,
+    this.isEnabled = false,
+  });
 }

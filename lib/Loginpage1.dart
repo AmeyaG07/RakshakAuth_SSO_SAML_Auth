@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        title: const Text('RakshakAuth Login'),
+        title: const Text('RakshakAuth LoginPage'),
         actions: [
           IconButton(
             icon: Icon(Icons.login),
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
 class Logincard extends StatelessWidget {
   final VoidCallback onClose;
   final DatabaseService db = DatabaseService();
-
+  bool isLogin = false;
   Logincard({Key? key, required this.onClose}) : super(key: key);
 
   @override
@@ -108,8 +108,7 @@ class Logincard extends StatelessWidget {
                 height: 40,
                 width: 40,
               ),
-              const Text(
-                '  Rakshakauth Login  ',
+              Text(isLogin?'  Rakshakauth Login  ' :' RakshakAuth Signup  ',
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8 , width: 8),
