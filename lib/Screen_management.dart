@@ -193,12 +193,12 @@ class _userTableWidgetState extends State<userTableWidget> {
     User(Users: "User_4", email: "john@example.com"),
   ];
 
-  void ShowDialogBox(){
+  void ShowDialogBox(String email) {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Add User'),
-          content: CrudTableWidget(),
+          title: Text('Edit user'),
+          content: CrudTableWidget(email: email),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -235,7 +235,7 @@ class _userTableWidgetState extends State<userTableWidget> {
                 icon: Icon(Icons.edit),
                 color: Colors.grey,
                 onPressed: () {
-                  ShowDialogBox();
+                  ShowDialogBox(user.email);/////
                 },
               ),
             ),
@@ -244,7 +244,7 @@ class _userTableWidgetState extends State<userTableWidget> {
                 icon: Icon(Icons.delete),
                 color: Colors.red,
                 onPressed: () {
-                  ShowDialogBox();
+                  ShowDialogBox(user.email);
                 },
               ),
             ),
@@ -278,7 +278,8 @@ class User {
 
 
 class CrudTableWidget extends StatefulWidget {
-  const CrudTableWidget({Key? key}) : super(key: key);
+  final String? email;
+  const CrudTableWidget({Key? key, this.email}) : super(key: key);
 
   @override
   _CrudTableWidgetState createState() => _CrudTableWidgetState();
@@ -302,7 +303,7 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
         children: [ Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
-    Text('Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+    Text(widget.email ?? 'Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
     Switch(value:isEmailEnabled , onChanged: (value) {
       setState(() {
         isEmailEnabled = value; // Toggle state

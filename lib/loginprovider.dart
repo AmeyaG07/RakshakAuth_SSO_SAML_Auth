@@ -87,7 +87,7 @@ class LoginProvider extends ChangeNotifier {
         uid: userCredential.user?.uid,
       );
 
-      await _dbRef.child("users/${currentuser!.username}").set(currentuser!.toJson());
+      await _dbRef.child("users/${currentuser!.uid}").set(currentuser!.toJson());
 
       notifyListeners();
 
