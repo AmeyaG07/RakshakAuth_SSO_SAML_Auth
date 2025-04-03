@@ -22,6 +22,8 @@ dependencies:
   firebase_auth_web: ^5.9.2
   font_awesome_flutter: ^10.8.0
   firebase_database: ^11.3.4
+  url_launcher: ^6.3.1
+
 
 
 flutter:
@@ -33,3 +35,4 @@ flutter:
     - assets/images/Logo.png
     - assets/images/RA.png
     - assets/images/homescreen.png
+    - assets/images/F_HomeScreen.png

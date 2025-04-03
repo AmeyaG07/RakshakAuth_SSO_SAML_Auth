@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:untitled/landingpage.dart';
-import 'Admin_Dashboard.dart';
+import 'package:untitled/SidebarWidget.dart';
 import 'Loginpage1.dart';
 import 'Profilepage.dart';
-import 'Screen_management.dart';
+
+
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key});
@@ -54,11 +53,11 @@ class _ContactPage extends State<ContactPage> {
         leading: Builder(
           builder:
               (context) => IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              ),
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         actions: [
           IconButton(
@@ -93,7 +92,7 @@ class _ContactPage extends State<ContactPage> {
           Text('   Logout    '),
         ],
       ),
-      drawer: SidebarMenu(),
+      drawer: buildSidebarMenu(context, 'ContactUs'),
       body: Stack(
         children: [
           // Background Image
@@ -110,7 +109,6 @@ class _ContactPage extends State<ContactPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Left Side Contact Info
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -247,7 +245,7 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
 
   const CustomTextField({required this.hintText, this.maxLines = 1, Key? key})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +279,7 @@ class ContactInfoRow extends StatelessWidget {
   final String text;
 
   const ContactInfoRow({required this.icon, required this.text, Key? key})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -291,141 +289,6 @@ class ContactInfoRow extends StatelessWidget {
         const SizedBox(width: 10),
         Text(text, style: const TextStyle(fontSize: 16, color: Colors.white70)),
       ],
-    );
-  }
-}
-
-class SidebarMenu extends StatefulWidget {
-  const SidebarMenu({Key? key});
-
-  @override
-  State<SidebarMenu> createState() => _SidebarMenu();
-}
-
-class _SidebarMenu extends State<SidebarMenu> {
-
-  void confirmbox(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (_) => AlertDialog(
-            title: Text('Logout'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => { logout(context)
-                },
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-    );
-  }
-
-  void logout(BuildContext context){
-    Navigator.pop(context, 'OK');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blueGrey),
-            child: Column(
-              children: [
-                Image.asset('assets/images/RA.png', width: 80),
-                SizedBox(height: 10),
-                Text(
-                  'Menu',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ],
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Profile'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 1.0,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(
-                title: const Text('HomePage'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LandingPage()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Screen Management'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ScreenManagement()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Contact Us'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ContactPage()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Logout'),
-                onTap: () {
-                  confirmbox(context);
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

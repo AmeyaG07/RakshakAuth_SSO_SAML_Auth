@@ -1,67 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/Admin_Dashboard.dart';
 import 'package:untitled/loginpage1.dart';
-import 'Profilepage.dart';
-import 'Screen_management.dart';
+import 'package:untitled/SidebarWidget.dart';
+import 'WidgetProviders.dart';
 import 'loginprovider.dart';
-import 'Contactus.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget{
   const LandingPage({Key? key});
+
+
+  @override
+  State<LandingPage>  createState() => _LandingPage();
+}
+
+class _LandingPage extends State<LandingPage> {
+
 
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginProvider>(
       builder: (context, loginprov, child) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blueGrey,
-            foregroundColor: Colors.white,
-            title: Text('${loginprov.currentuser?.username ?? "Admin"} Login'),
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              ),
-            ),
-            actions: [
-              IconButton(icon: Icon(Icons.account_circle_outlined), onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }),
-              Text(' Profile     '),
-              IconButton(
-                icon: Icon(Icons.add_ic_call_outlined),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ContactPage()),
-                  );
-                },
-              ),
-
-              Text('   Contact Us   '),
-              IconButton(icon: Icon(Icons.home), onPressed: () {
-
-              }),
-              Text('   Home    '),
-              IconButton(
-                icon: Icon(Icons.logout),
-                onPressed: () {
-                  Provider.of<LoginProvider>(context, listen: false).signOut();
-                  confirmbox(context);
-                },
-              ),
-              Text('   Logout    '),
-            ],
-          ),
-          drawer: SidebarMenu(),
+          appBar: Provider.of<AppBarProvider>(context, listen: false).buildAppBar(context),
+          drawer: buildSidebarMenu(context, 'HomePage'),
           body: Stack(
             children: [
               Positioned.fill(
@@ -77,22 +41,16 @@ class LandingPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.card_travel, 'Product 1', () {}),
-                        _buildCard(context, Icons.card_travel, 'Product 2', () {
-                        }),
+                        _buildCard(context, Icons.code, 'LeetCode ', 'https://leetcode.com/accounts/login/'),
+                        _buildCard(context, Icons.device_hub_outlined, 'Github', 'https://github.com/login'),
                       ],
                     ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.card_travel, 'Product 3', () {}),
-                        _buildCard(context, Icons.card_travel, 'Product 4', () {
-                          Provider.of<LoginProvider>(context, listen: false).signOut();
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
-                          );
-                        }),
+                        _buildCard(context, Icons.add_chart_rounded, 'Pinterest', 'https://in.pinterest.com/login/'),
+                        _buildCard(context, Icons.co_present_outlined, 'Canva', 'https://www.canva.com/en_in/'),
                       ],
                     ),
                   ],
@@ -105,9 +63,9 @@ class LandingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(BuildContext context, IconData icon, String title, VoidCallback onTap) {
+  Widget _buildCard(BuildContext context, IconData icon, String title, String url) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => _launchURL(url),
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -115,7 +73,6 @@ class LandingPage extends StatelessWidget {
           width: 300,
           height: 270,
           padding: EdgeInsets.all(12),
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -128,141 +85,16 @@ class LandingPage extends StatelessWidget {
       ),
     );
   }
+
 }
 
-class SidebarMenu extends StatefulWidget {
-  const SidebarMenu({Key? key});
 
-  @override
-  State<SidebarMenu> createState() => _SidebarMenu();
-}
-
-class _SidebarMenu extends State<SidebarMenu> {
-
-  void confirmbox(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (_) => AlertDialog(
-        title: Text('Logout'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => { logout(context)
-            },
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void logout(BuildContext context){
-    Navigator.pop(context, 'OK');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blueGrey),
-            child: Column(
-              children: [
-                Image.asset('assets/images/RA.png', width: 80),
-                SizedBox(height: 10),
-                Text(
-                  'Menu',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ],
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Profile'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 1.0,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.3),
-              child: ListTile(
-                title: const Text('HomePage'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LandingPage()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Screen Management'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ScreenManagement()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Contact Us'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ContactPage()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Colors.blueGrey.withOpacity(0.1),
-              child: ListTile(
-                title: const Text('Logout'),
-                onTap: () {
-                  confirmbox(context);
-
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+void _launchURL(String url) async {
+  Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, webOnlyWindowName: '_blank');
+  } else {
+    throw 'Could not launch $url';
   }
 }
 
