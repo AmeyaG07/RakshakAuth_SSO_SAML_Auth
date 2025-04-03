@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/landingpage.dart';
@@ -20,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
@@ -34,7 +36,17 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
           ),
-          Text(' Login     '),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                showLoginCard = true;
+              });
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.add_box_outlined),
             onPressed: () {
@@ -43,14 +55,24 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
           ),
-          Text('   Signup       '),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                showLoginCard = !showLoginCard;
+              });
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text('Signup', style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ),
         ],
       ),
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/homescreen.png',
+              'assets/images/F_HomeScreen.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -87,83 +109,44 @@ class Logincard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 100.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(9.0),
         ),
         elevation: 8,
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: onClose,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: onClose,
+                  ),
                 ),
-              ),
-              Image.asset('assets/images/RA.png',
-                height: 40,
-                width: 40,
-              ),
-              Text(isLogin?'  Rakshakauth Login  ' :' RakshakAuth Signup  ',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8 , width: 8),
-              TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                    labelText: 'Username', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 8 , width: 8),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                    labelText: 'Password', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 40 , width: 80),
-              Consumer<LoginProvider>(
-                builder: (context, loginprov, child) {
-                  return ElevatedButton.icon(
-                    icon: Image.asset('assets/images/Google.png', height: 20 , width: 40,),
-                    label: const Text('Sign in with Google'),
-                    onPressed: () async {
-                      bool success = await loginprov.signInWithGoogle(context);
-
-                        if (success) {
-                          firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
-
-                          db.create(user!.uid, {
-                            "username": user.displayName ?? "Updated Name",
-                            "email": user.email ?? "Unknown"
-                          });
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const LandingPage()),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Login Failed"),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: const Text("Close"),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    );
-                  },
+                Image.asset('assets/images/RA.png',
+                  height: 40,
+                  width: 40,
                 ),
+                Text(isLogin?'  Rakshakauth Login  ' :' RakshakAuth Signup  ',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8 , width: 8),
+                TextField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                      labelText: 'Username', border: OutlineInputBorder()),
+                ),
+                const SizedBox(height: 8 , width: 8),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      labelText: 'Password', border: OutlineInputBorder()),
+                ),
+
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
@@ -202,6 +185,46 @@ class Logincard extends StatelessWidget {
                     }
                   },
                   child: const Text("Login"),
+                ),
+                const SizedBox(height: 40 , width: 80),
+                Consumer<LoginProvider>(
+                  builder: (context, loginprov, child) {
+                    return ElevatedButton.icon(
+                      icon: Image.asset('assets/images/Google.png', height: 20 , width: 40,),
+                      label: const Text('Sign in with Google'),
+                      onPressed: () async {
+                        bool success = await loginprov.signInWithGoogle(context);
+
+                        if (success) {
+                          firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+
+                          db.create(user!.uid, {
+                            "username": user.displayName ?? "Updated Name",
+                            "email": user.email ?? "Unknown"
+                          });
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const LandingPage()),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Login Failed"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: const Text("Close"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

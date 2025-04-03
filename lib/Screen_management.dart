@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/Admin_Dashboard.dart';
 import 'package:untitled/Loginpage1.dart';
-import 'package:untitled/Profilepage.dart';
-import 'package:untitled/landingpage.dart';
+import 'package:untitled/SidebarWidget.dart';
+
+
 
 class ScreenManagement extends StatefulWidget {
   const ScreenManagement({Key? key});
@@ -59,98 +59,7 @@ class _ScreenManagement extends State<ScreenManagement> {
               ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blueGrey),
-              child: Column(
-                children: [
-                  Image.asset('assets/images/RA.png', width: 80),
-                  SizedBox(height: 10),
-                  Text(
-                      'Menu',
-                      style: TextStyle(color: Colors.white, fontSize: 24)
-                  ),
-                ],
-              ),
-            ),
-            Opacity(
-              opacity: 0.6,
-              child: Container(
-                color: Colors.blueGrey.withOpacity(0.1),
-                child: ListTile(
-                  title: const Text('Profile'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfileScreen()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Opacity(
-              opacity: 0.6,
-              child: Container(
-                color: Colors.blueGrey.withOpacity(0.3),
-                child: ListTile(
-                  title: const Text('HomePage'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LandingPage()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Opacity(
-              opacity: 0.6,
-              child: Container(
-                color: Colors.blueGrey.withOpacity(0.1),
-                child: ListTile(
-                  title: const Text('Screen Management'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ScreenManagement()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Opacity(
-              opacity: 1.0,
-              child: Container(
-                color: Colors.blueGrey.withOpacity(0.3),
-                child: ListTile(
-                  title: const Text('Adminpage'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AdminDashboard()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Opacity(
-              opacity: 0.6,
-              child: Container(
-                color: Colors.blueGrey.withOpacity(0.1),
-                child: ListTile(
-                  title: const Text('Logout'),
-                  onTap: () {
-                    confirmbox(context);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      drawer: buildSidebarMenu(context, 'Screen_Management'),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -299,66 +208,66 @@ class _CrudTableWidgetState extends State<CrudTableWidget> {
     return SizedBox(
         height: 350,
         child:  Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [ Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Text(widget.email ?? 'Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-    Switch(value:isEmailEnabled , onChanged: (value) {
-      setState(() {
-        isEmailEnabled = value; // Toggle state
-      });
-    },
-    )
-  ],
-        ),
-          DataTable(
-            columns: const [
-              DataColumn(label: Text('Screens')),
-              DataColumn(label: Text('Create')),
-              DataColumn(label: Text('Read')),
-              DataColumn(label: Text('Update')),
-              DataColumn(label: Text('Delete')),
-            ],
-            rows: users.map((user) {
-              return DataRow(cells: [
-                DataCell(Text(user.Users)),
-                DataCell(Checkbox(
-                  value: user.create,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      user.create = value ?? false;
-                    });
-                  },
-                )),
-                DataCell(Checkbox(
-                  value: user.read,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      user.read = value ?? false;
-                    });
-                  },
-                )),
-                DataCell(Checkbox(
-                  value: user.update,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      user.update = value ?? false;
-                    });
-                  },
-                )),
-                DataCell(Checkbox(
-                  value: user.delete,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      user.delete = value ?? false;
-                    });
-                  },
-                )),
-              ]);
-            }).toList(),
-          )
-        ]));
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [ Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.email ?? 'Email', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                Switch(value:isEmailEnabled , onChanged: (value) {
+                  setState(() {
+                    isEmailEnabled = value; // Toggle state
+                  });
+                },
+                )
+              ],
+            ),
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Screens')),
+                  DataColumn(label: Text('Create')),
+                  DataColumn(label: Text('Read')),
+                  DataColumn(label: Text('Update')),
+                  DataColumn(label: Text('Delete')),
+                ],
+                rows: users.map((user) {
+                  return DataRow(cells: [
+                    DataCell(Text(user.Users)),
+                    DataCell(Checkbox(
+                      value: user.create,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          user.create = value ?? false;
+                        });
+                      },
+                    )),
+                    DataCell(Checkbox(
+                      value: user.read,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          user.read = value ?? false;
+                        });
+                      },
+                    )),
+                    DataCell(Checkbox(
+                      value: user.update,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          user.update = value ?? false;
+                        });
+                      },
+                    )),
+                    DataCell(Checkbox(
+                      value: user.delete,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          user.delete = value ?? false;
+                        });
+                      },
+                    )),
+                  ]);
+                }).toList(),
+              )
+            ]));
 /*    Container(
     padding: EdgeInsets.all(16),
     decoration: BoxDecoration(
