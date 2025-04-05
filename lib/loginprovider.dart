@@ -83,7 +83,10 @@ class LoginProvider extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
+
+
   Future<bool> signInWithGoogle(BuildContext context) async {
+
     try {
       final GoogleSignInAccount? silentUser = await _googleSignIn.signInSilently();
       if (silentUser != null) {

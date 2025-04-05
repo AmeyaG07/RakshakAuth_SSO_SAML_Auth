@@ -69,12 +69,17 @@ class _ScreenManagement extends State<ScreenManagement> {
                 ),
               ),
             ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
 
 class User {
   final String id;
@@ -97,6 +102,7 @@ class User {
     this.isEnabled = false,
   });
 }
+
 
 class CrudTableWidget extends StatefulWidget {
   final String? email;

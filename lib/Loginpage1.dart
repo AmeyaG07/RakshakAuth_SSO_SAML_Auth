@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/landingpage.dart';
@@ -227,6 +226,15 @@ class Logincard extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await db.delete(usernameController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("User deleted successfully")),
+                    );
+                  },
+                  child: const Text("Delete Account"),
+                ),
               ],
             ),
           ),

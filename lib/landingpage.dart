@@ -73,6 +73,7 @@ class _LandingPage extends State<LandingPage> {
           width: 300,
           height: 270,
           padding: EdgeInsets.all(12),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
