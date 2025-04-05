@@ -1,9 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/Loginpage1.dart';
 import 'package:untitled/SidebarWidget.dart';
 import 'Screen_management.dart';
-
+import 'WidgetProviders.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -12,74 +13,60 @@ class AdminDashboard extends StatefulWidget {
   _AdminDashboardState createState() => _AdminDashboardState();
 }
 
-void confirmbox(BuildContext context) {
-  showDialog(
-    context: context,
-    builder:
-        (_) => AlertDialog(
-      title: Text('Logout'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => { logout(context)
-          },
-          child: const Text('Yes'),
-        ),
-      ],
-    ),
-  );
-}
-
-void logout(BuildContext context){
-  Navigator.pop(context, 'OK');
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => LoginPage()),
-  );
-}
-
-
-
 class _AdminDashboardState extends State<AdminDashboard> {
   bool isUserEnabled = false;
-  void ShowDialogBox(bool isEditable){
+
+  void confirmbox(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: isEditable?Text('Edit User') :Text('Add User'),
-          content: CrudTableWidget(),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        )
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Logout'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => {logout(context)},
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
     );
   }
+
+  void logout(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+  void ShowDialogBox(bool isEditable) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: isEditable ? Text('Edit User') : Text('Add User'),
+        content: AdminCrudTableWidget(),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        foregroundColor: Colors.white,
-        title: const Text('RakshakAuth Admin Dashboard'),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
-      ),
+      appBar: Provider.of<AppBarProvider>(context, listen: false).buildAppBar(context),
       drawer: buildSidebarMenu(context, 'AdminPage'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,10 +86,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
           userTableWidget(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        ShowDialogBox(false);
-      },
-        child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ShowDialogBox(false);
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
@@ -116,13 +105,14 @@ class userTableWidget extends StatefulWidget {
 
 class _userTableWidgetState extends State<userTableWidget> {
   List<User> users = [];
+  bool _isLoading = true;
 
-  bool _isLoading = true;//
   @override
   void initState() {
     super.initState();
     fetchUsers();
   }
+
   void fetchUsers() async {
     DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("users");
 
@@ -132,13 +122,11 @@ class _userTableWidgetState extends State<userTableWidget> {
         List<User> tempUsers = [];
         Map<dynamic, dynamic> usersData = snapshot.value as Map<dynamic, dynamic>;
 
-        usersData.forEach((key, value) {//
-          // Check the data structure and handle accordingly
+        usersData.forEach((key, value) {
           if (value is Map) {
             String username = value["username"] ?? "Unknown";
             String email = value["email"] ?? "No email";
 
-            // If there's a nested structure like the one in your database
             if (username == "Unknown" && value.containsKey("username") && value["username"] is String) {
               username = value["username"];
             }
@@ -146,10 +134,10 @@ class _userTableWidgetState extends State<userTableWidget> {
             tempUsers.add(User(
               id: key,
               Users: username,
-              email: email, //195
+              email: email,
             ));
           }
-        });//
+        });
 
         setState(() {
           users = tempUsers;
@@ -164,34 +152,30 @@ class _userTableWidgetState extends State<userTableWidget> {
     });
   }
 
-
-
-  void ShowDialogBox(bool isEditable){
+  void ShowDialogBox(bool isEditable) {
     showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: isEditable?Text('Edit User') :Text('Add User'),
-          content: CrudTableWidget(),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        )
+      context: context,
+      builder: (_) => AlertDialog(
+        title: isEditable ? Text('Edit User') : Text('Add User'),
+        content: CrudTableWidget(),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
-
-  void confirmdeletebox(BuildContext context , String userId, String username) {
+  void confirmdeletebox(BuildContext context, String userId, String username) {
     showDialog(
       context: context,
-      builder:
-          (_) => AlertDialog(
+      builder: (_) => AlertDialog(
         title: Text('Confirm Delete '),
         content: Text('Are you sure you want to delete user "$username"?'),
         actions: <Widget>[
@@ -200,17 +184,17 @@ class _userTableWidgetState extends State<userTableWidget> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => { deleteUser(context, userId, username) },
+            onPressed: () => {deleteUser(context, userId, username)},
             child: const Text('Yes'),
           ),
         ],
       ),
     );
   }
+
   void deleteUser(BuildContext context, String userKey, String username) {
     DatabaseReference userRef = FirebaseDatabase.instance.ref().child("users").child(userKey);
     userRef.remove().then((_) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('User "$username" deleted successfully')),
       );
@@ -220,7 +204,6 @@ class _userTableWidgetState extends State<userTableWidget> {
       });
       fetchUsers();
     }).catchError((error) {
-      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to delete user: $error')),
       );
@@ -228,14 +211,13 @@ class _userTableWidgetState extends State<userTableWidget> {
     });
   }
 
-  void logout(BuildContext context){
+  void logout(BuildContext context) {
     Navigator.pop(context, 'OK');
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AdminDashboard()),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +265,6 @@ class _userTableWidgetState extends State<userTableWidget> {
   }
 }
 
-
 class User {
   final String id;
   final String Users;
@@ -293,6 +274,7 @@ class User {
   bool update;
   bool delete;
   bool isEnabled;
+  String screenName;
 
   User({
     required this.id,
@@ -303,5 +285,157 @@ class User {
     this.update = false,
     this.delete = false,
     this.isEnabled = false,
+    this.screenName = '',
   });
+}
+
+class AdminCrudTableWidget extends StatefulWidget {
+  final String? email;
+  const AdminCrudTableWidget({Key? key, this.email}) : super(key: key);
+
+  @override
+  _AdminCrudTableWidgetState createState() => _AdminCrudTableWidgetState();
+}
+
+class _AdminCrudTableWidgetState extends State<AdminCrudTableWidget> {
+  bool isEmailEnabled = false;
+  final TextEditingController emailController = TextEditingController();
+  String? emailError;
+
+  final List<User> users = [
+    User(id: "1", Users: "HomeScreen", email: "john@example.com"),
+    User(id: "2", Users: "LandingPage", email: "jane@example.com"),
+    User(id: "3", Users: "AdminPage", email: "alice@example.com"),
+    User(id: "4", Users: "User Permissions", email: "john@example.com"),
+  ];
+
+  void validateEmail(String value) {
+    bool emailExists = users.any((user) => user.email.toLowerCase() == value.toLowerCase());
+    setState(() {
+      emailError = emailExists ? null : "Email Not Found";
+      isEmailEnabled = emailExists;
+    });
+  }
+
+  void addUser() {
+    String newEmail = emailController.text.trim();
+    bool emailExists = users.any((user) => user.email.toLowerCase() == newEmail.toLowerCase());
+
+    if (newEmail.isNotEmpty && !emailExists) {
+      setState(() {
+        users.add(User(
+          id: DateTime.now().toString(),
+          Users: "NewScreen",
+          email: newEmail,
+        ));
+        isEmailEnabled = true;
+        emailError = null;
+        emailController.clear();
+      });
+    } else {
+      setState(() {
+        emailError = " Email Already Exists";
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: "Enter Email",
+                    errorText: emailError,
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: validateEmail,
+                ),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: addUser,
+                child: const Text("Add User"),
+              ),
+              const SizedBox(width: 10),
+              Switch(
+                value: isEmailEnabled,
+                onChanged: (value) {
+                  if (isEmailEnabled) {
+                    setState(() {
+                      isEmailEnabled = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: SingleChildScrollView(
+              child: DataTable(
+                columns: const [
+                  DataColumn(label: Text('Screens')),
+                  DataColumn(label: Text('Create')),
+                  DataColumn(label: Text('Read')),
+                  DataColumn(label: Text('Update')),
+                  DataColumn(label: Text('Delete')),
+                ],
+                rows: users.map((user) {
+                  return DataRow(cells: [
+                    DataCell(Text(user.screenName)),
+                    DataCell(Checkbox(
+                      value: user.create,
+                      onChanged: isEmailEnabled
+                          ? (bool? value) {
+                        setState(() {
+                          user.create = value ?? false;
+                        });
+                      }
+                          : null,
+                    )),
+                    DataCell(Checkbox(
+                      value: user.read,
+                      onChanged: isEmailEnabled
+                          ? (bool? value) {
+                        setState(() {
+                          user.read = value ?? false;
+                        });
+                      }
+                          : null,
+                    )),
+                    DataCell(Checkbox(
+                      value: user.update,
+                      onChanged: isEmailEnabled
+                          ? (bool? value) {
+                        setState(() {
+                          user.update = value ?? false;
+                        });
+                      }
+                          : null,
+                    )),
+                    DataCell(Checkbox(
+                      value: user.delete,
+                      onChanged: isEmailEnabled
+                          ? (bool? value) {
+                        setState(() {
+                          user.delete = value ?? false;
+                        });
+                      }
+                          : null,
+                    )),
+                  ]);
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

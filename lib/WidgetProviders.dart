@@ -1,20 +1,78 @@
-
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/Loginpage1.dart';
 import 'package:untitled/landingpage.dart';
 import 'Contactus.dart';
+import 'package:restart_app/restart_app.dart';
 import 'loginprovider.dart';
 import 'Profilepage.dart';
 
-
 class AppBarProvider extends ChangeNotifier {
+  int tokenTTL = 3599;
+  Timer? _timer;
+
+  AppBarProvider() {
+    startCountdown();
+  }
+
   PreferredSizeWidget buildAppBar(BuildContext context) {
     final loginprov = Provider.of<LoginProvider>(context, listen: false);
 
     return AppBar(
       backgroundColor: Colors.blueGrey,
       foregroundColor: Colors.white,
-      title: Text('${loginprov.currentuser?.username ?? "Admin"} Login'),
+      title: Row(
+        children: [
+          Text('${loginprov.currentuser?.username ?? "Admin"} Login  |  '),
+          SizedBox(width: 11),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white70,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.shade300),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Row(
+              children: [
+                Text(
+                  'SAML ',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                  ),
+                ),
+                SizedBox(width: 4),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    backgroundColor: tokenTTL > 0 ? Colors.green : Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 2,
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    tokenTTL > 0 ? 'Active' : 'Expired',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       leading: Builder(
         builder: (context) => IconButton(
           icon: Icon(Icons.menu),
@@ -34,8 +92,6 @@ class AppBarProvider extends ChangeNotifier {
           },
         ),
         Text(' Profile     '),
-
-
         IconButton(
           icon: Icon(Icons.add_ic_call_outlined),
           onPressed: () {
@@ -46,20 +102,19 @@ class AppBarProvider extends ChangeNotifier {
           },
         ),
         Text('   Contact Us   '),
-
-
-        IconButton(icon: Icon(Icons.home), onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LandingPage()),
-          );}),
+        IconButton(
+          icon: Icon(Icons.home),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LandingPage()),
+            );
+          },
+        ),
         Text('   Home    '),
-
-
         IconButton(
           icon: Icon(Icons.logout),
           onPressed: () {
-            loginprov.signOut();
             confirmbox(context);
           },
         ),
@@ -68,9 +123,16 @@ class AppBarProvider extends ChangeNotifier {
     );
   }
 
-
-
-
+  void startCountdown() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (tokenTTL > 0) {
+        tokenTTL--;
+      } else {
+        _timer?.cancel();
+      }
+      notifyListeners();
+    });
+  }
 
   void confirmbox(BuildContext context) {
     showDialog(
@@ -83,9 +145,7 @@ class AppBarProvider extends ChangeNotifier {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
-              logout(context);
-            },
+            onPressed: () => {logout(context)},
             child: const Text('Yes'),
           ),
         ],
@@ -93,21 +153,50 @@ class AppBarProvider extends ChangeNotifier {
     );
   }
 
-  void logout(BuildContext context) {
-    Navigator.pop(context, 'OK');
-    Navigator.pushReplacementNamed(context, '/login');
+  void logout(BuildContext context) async {
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+
+    try {
+      // Firebase sign out
+      await FirebaseAuth.instance.signOut();
+
+      // Google sign out (if applicable)
+      final googleSignIn = GoogleSignIn();
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+
+      // Clear user data
+      loginProvider.currentuser = null;
+
+      // Go to LoginPage and clear navigation stack
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+            (route) => false,
+      );
+    } catch (e) {
+      print("Logout error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Logout failed: ${e.toString()}")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
 
-
 class SidebarProvider extends ChangeNotifier {
-
   List<Screens> screens = [
-    Screens(name: "HomeScreen", create: true, read: true , update: true , delete: true),
-    Screens(name: "Admin_Dashboard", create: true, read: true , update: true , delete: true),
-    Screens(name: "Screen_management", create: true, read: true , update: true , delete: true),
-    Screens(name: "Contactus", create: true, read: true , update: true , delete: true),
-    Screens(name: "Profilepage", create: true, read: true , update: true , delete: true),
+    Screens(name: "HomeScreen", create: true, read: true, update: true, delete: true),
+    Screens(name: "Admin_Dashboard", create: true, read: true, update: true, delete: true),
+    Screens(name: "Screen_management", create: true, read: true, update: true, delete: true),
+    Screens(name: "Contactus", create: true, read: true, update: true, delete: true),
+    Screens(name: "Profilepage", create: true, read: true, update: true, delete: true),
   ];
 }
 

@@ -23,6 +23,8 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   firebase_database: ^11.3.4
   url_launcher: ^6.3.1
+  restart_app: ^1.3.2
+  data_table_2: ^2.6.0
 
 
 
@@ -34,5 +36,10 @@ flutter:
     - assets/images/India.jpg
     - assets/images/Logo.png
     - assets/images/RA.png
-    - assets/images/homescreen.png
-    - assets/images/F_HomeScreen.png
+    - assets/images/RA_background.png
+    - assets/images/canva.jpeg
+    - assets/images/coursera.png
+    - assets/images/linkedin.png
+    - assets/images/miro.png
+    - assets/images/pinterest.png
+    - assets/images/zoom.png

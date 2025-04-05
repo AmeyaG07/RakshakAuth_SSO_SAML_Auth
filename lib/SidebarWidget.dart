@@ -1,22 +1,22 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/WidgetProviders.dart';
 import 'Admin_Dashboard.dart';
 import 'Contactus.dart';
+import 'Loginpage1.dart';
 import 'Profilepage.dart';
 import 'Screen_management.dart';
 import 'landingpage.dart';
 import 'loginprovider.dart';
+import 'package:restart_app/restart_app.dart';
 
-Widget buildSidebarMenu(BuildContext context, String currentPage) {
-  return Consumer<SidebarProvider>(
-    builder: (context, sidebarProvider, _) {
-      List<Widget> screens = [];
-      for (Screens screen in sidebarProvider.screens) {
-        screens.add(_buildMenuItem(context, screen.name!, ProfileScreen(), currentPage));
-      }
+
+
+Widget buildSidebarMenu(BuildContext context, String currentPage, {bool isAdmin = false})
+ {
 
       return Drawer(
         child: ListView(
@@ -39,26 +39,26 @@ Widget buildSidebarMenu(BuildContext context, String currentPage) {
             _buildMenuItem(context, 'HomePage', LandingPage(), currentPage),
             _buildMenuItem(context, 'Screen Management', ScreenManagement(), currentPage),
             _buildMenuItem(context, 'Contact Us', ContactPage(), currentPage),
-            _buildMenuItem(context, 'Admin Dashboard', AdminDashboard(), currentPage),
+            if (isAdmin)
+              _buildMenuItem(context, 'Admin Dashboard', AdminDashboard(), currentPage),
             _buildLogoutItem(context),
           ],
         ),
       );
-    },
-  );
+
 }
 
 Widget _buildMenuItem(BuildContext context, String title, Widget page, String currentPage) {
   bool isActive = title == currentPage;
 
   return Container(
-    color: isActive ? Colors.blueGrey[50] : Colors.blueGrey[50],
+    color: isActive ? Colors.blueGrey[100] : Colors.blueGrey[50],
     child: ListTile(
       title: Text
         (
         title, style: TextStyle(
         fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-        color: isActive ? Colors.white : Colors.black,
+        color: isActive ? Colors.black : Colors.black54,
       ),
       ),
       onTap: () {
@@ -88,3 +88,34 @@ Widget _buildLogoutItem(BuildContext context) {
     ),
   );
 }
+
+void confirmbox(BuildContext context) {
+  showDialog(
+    context: context,
+    builder:
+        (_) => AlertDialog(
+      title: Text('Logout'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => { logout(context)
+          },
+          child: const Text('Yes'),
+        ),
+      ],
+    ),
+  );
+}
+
+void logout(BuildContext context) {
+  Navigator.pop(context);
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => LoginPage()),
+  );
+}
+
+

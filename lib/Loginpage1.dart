@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/F_HomeScreen.png',
+              'assets/images/RA_background.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -227,15 +227,6 @@ class Logincard extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    await db.delete(usernameController.text);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("User deleted successfully")),
-                    );
-                  },
-                  child: const Text("Delete Account"),
-                ),
               ],
             ),
           ),

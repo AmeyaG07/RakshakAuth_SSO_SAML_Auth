@@ -17,8 +17,7 @@ class Screens {
     this.read = false,
     this.update = false,
     this.delete = false,
-  }
-      );
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -29,9 +28,10 @@ class Screens {
       "delete": delete,
     };
   }
+
   factory Screens.fromJson(Map<String, dynamic> json) {
     return Screens(
-      name: json["name"],
+      name: json["ScreenName"],
       create: json["create"] ?? false,
       read: json["read"] ?? false,
       update: json["update"] ?? false,
@@ -40,13 +40,14 @@ class Screens {
   }
 }
 
-class User {
+class AppUser {
   String? username;
   String? password;
   String? email;
   String? uid;
   Map<String, Screens>? screens;
-  User({this.username, this.password, this.email, this.uid});
+
+  AppUser({this.username, this.password, this.email, this.uid, this.screens});
 
   Map<String, dynamic> toJson() {
     return {
@@ -57,19 +58,38 @@ class User {
       "screens": screens?.map((key, value) => MapEntry(key, value.toJson())),
     };
   }
+
+  factory AppUser.fromJson(Map<String, dynamic> json, String uid) {
+    final screensData = json["screens"] as Map<String, dynamic>?;
+    Map<String, Screens>? screens;
+    if (screensData != null) {
+      screens = screensData.map((key, value) => MapEntry(key, Screens.fromJson(value)));
+    }
+
+    return AppUser(
+      username: json["username"],
+      password: json["password"],
+      email: json["email"],
+      uid: uid,
+      screens: screens,
+    );
+  }
 }
 
 class LoginProvider extends ChangeNotifier {
-  User? currentuser;
+  AppUser? currentuser;
+  bool get isAdmin => currentuser?.email == 'arg07work@gmail.com';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
-
-
   Future<bool> signInWithGoogle(BuildContext context) async {
-
     try {
+      final GoogleSignInAccount? silentUser = await _googleSignIn.signInSilently();
+      if (silentUser != null) {
+        await _googleSignIn.disconnect();
+      }
+
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return false;
 
@@ -82,7 +102,7 @@ class LoginProvider extends ChangeNotifier {
 
       UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-      currentuser = User(
+      currentuser = AppUser(
         username: userCredential.user?.displayName,
         email: userCredential.user?.email,
         uid: userCredential.user?.uid,
@@ -103,49 +123,54 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+    } catch (_) {}
+
+    if (await _googleSignIn.isSignedIn()) {
+      try {
+        await _googleSignIn.disconnect();
+      } catch (_) {}
+    }
+
     await _googleSignIn.signOut();
-    await _auth.signOut();
+
     currentuser = null;
     notifyListeners();
   }
 
-  Future<void> addUser(User user) async {
-    await _dbRef.child("users/${user.username}").set(user.toJson());
+  Future<void> addUser(AppUser user) async {
+    await _dbRef.child("users/${user.uid}").set(user.toJson());
     notifyListeners();
   }
-
 
   Future<void> deleteUser(String uid) async {
     await _dbRef.child("users/$uid").remove();
     notifyListeners();
   }
 
-  Future<void> editUser(User updatedUser) async {
+  Future<void> editUser(AppUser updatedUser) async {
     await _dbRef.child("users/${updatedUser.uid}").update(updatedUser.toJson());
     notifyListeners();
   }
 
-  Future<List<User>> listUsers() async {
+  Future<List<AppUser>> listUsers() async {
     DataSnapshot snapshot = await _dbRef.child("users").get();
 
     if (snapshot.exists) {
       Map<dynamic, dynamic> usersData = snapshot.value as Map<dynamic, dynamic>;
-      return usersData.entries.map((entry) => User(
-        username: entry.value["username"],
-        password: entry.value["password"],
-        email: entry.value["email"],
-        uid: entry.key,
-      )).toList();
+      return usersData.entries.map((entry) {
+        return AppUser.fromJson(Map<String, dynamic>.from(entry.value), entry.key);
+      }).toList();
     }
     return [];
   }
 
-  Future<Map<String, dynamic>> screens(String username) async {
-    DataSnapshot snapshot = await _dbRef.child("users/$username/screens").get();
-
+  Future<Map<String, dynamic>> screens(String uid) async {
+    DataSnapshot snapshot = await _dbRef.child("users/$uid/screens").get();
     if (snapshot.exists) {
-      return snapshot.value as Map<String, dynamic>;
+      return Map<String, dynamic>.from(snapshot.value as Map);
     }
     return {};
   }

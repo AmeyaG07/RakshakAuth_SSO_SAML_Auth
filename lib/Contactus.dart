@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/Loginpage1.dart';
 import 'package:untitled/SidebarWidget.dart';
-import 'Loginpage1.dart';
 import 'Profilepage.dart';
-
+import 'WidgetProviders.dart';
+import 'landingpage.dart';
 
 
 class ContactPage extends StatefulWidget {
@@ -34,9 +38,8 @@ class _ContactPage extends State<ContactPage> {
       ),
     );
   }
-
-  void logout(BuildContext context){
-    Navigator.pop(context, 'OK');
+  void logout(BuildContext context) {
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -46,52 +49,7 @@ class _ContactPage extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        foregroundColor: Colors.white,
-        title: Text('Contact RakshakAuth'),
-        leading: Builder(
-          builder:
-              (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.account_circle_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-            },
-          ),
-          Text(' Profile     '),
-          IconButton(
-            icon: Icon(Icons.add_ic_call_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContactPage()),
-              );
-            },
-          ),
-
-          Text('   Contact Us   '),
-          IconButton(icon: Icon(Icons.home), onPressed: () {}),
-          Text('   Home    '),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              confirmbox(context);
-            },
-          ),
-          Text('   Logout    '),
-        ],
-      ),
+      appBar: Provider.of<AppBarProvider>(context, listen: false).buildAppBar(context),
       drawer: buildSidebarMenu(context, 'ContactUs'),
       body: Stack(
         children: [

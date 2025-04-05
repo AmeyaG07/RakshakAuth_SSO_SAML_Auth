@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/loginpage1.dart';
 import 'package:untitled/SidebarWidget.dart';
 import 'WidgetProviders.dart';
 import 'loginprovider.dart';
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -25,7 +23,7 @@ class _LandingPage extends State<LandingPage> {
       builder: (context, loginprov, child) {
         return Scaffold(
           appBar: Provider.of<AppBarProvider>(context, listen: false).buildAppBar(context),
-          drawer: buildSidebarMenu(context, 'HomePage'),
+          drawer: buildSidebarMenu(context, 'HomePage', isAdmin: loginprov.isAdmin),
           body: Stack(
             children: [
               Positioned.fill(
@@ -41,16 +39,18 @@ class _LandingPage extends State<LandingPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.code, 'LeetCode ', 'https://leetcode.com/accounts/login/'),
-                        _buildCard(context, Icons.device_hub_outlined, 'Github', 'https://github.com/login'),
+                        _buildCard(context, 'assets/images/linkedin.png', 'LinkedIn', 'https://www.linkedin.com/login'),
+                        _buildCard(context, 'assets/images/miro.png', 'Miro', 'https://miro.com/login/'),
+                        _buildCard(context, 'assets/images/coursera.png', 'Coursera', 'https://www.coursera.org/login'),
                       ],
                     ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, Icons.add_chart_rounded, 'Pinterest', 'https://in.pinterest.com/login/'),
-                        _buildCard(context, Icons.co_present_outlined, 'Canva', 'https://www.canva.com/en_in/'),
+                        _buildCard(context, 'assets/images/pinterest.png', 'Pinterest', 'https://in.pinterest.com/login/'),
+                        _buildCard(context, 'assets/images/zoom.png', 'Zoom', 'https://zoom.us/signin#/login'),
+                        _buildCard(context, 'assets/images/canva.jpeg', 'Canva', 'https://www.canva.com/en_in/'),
                       ],
                     ),
                   ],
@@ -63,7 +63,7 @@ class _LandingPage extends State<LandingPage> {
     );
   }
 
-  Widget _buildCard(BuildContext context, IconData icon, String title, String url) {
+  Widget _buildCard(BuildContext context, String imagePath, String title, String url){
     return GestureDetector(
       onTap: () => _launchURL(url),
       child: Card(
@@ -76,7 +76,12 @@ class _LandingPage extends State<LandingPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 40, color: Colors.blueGrey),
+              Image.asset(
+                imagePath,
+                width: 120,
+                height: 120,
+                fit: BoxFit.contain,
+              ),
               SizedBox(height: 10),
               Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],

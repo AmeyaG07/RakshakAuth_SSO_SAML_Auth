@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:restart_app/restart_app.dart';
 import 'Contactus.dart';
 import 'Loginpage1.dart';
+import 'SidebarWidget.dart';
+import 'landingpage.dart';
+import 'loginprovider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -35,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
-    _tabController!.index = 4; // Set Notifications tab as active
+    _tabController!.index = 4;
   }
 
   @override
@@ -65,13 +71,37 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     );
   }
 
-  void logout(BuildContext context){
-    Navigator.pop(context, 'OK');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+  void logout(BuildContext context) async {
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+
+    try {
+      // Firebase sign out
+      await FirebaseAuth.instance.signOut();
+
+      // Google sign out (if applicable)
+      final googleSignIn = GoogleSignIn();
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+
+      // Clear user data
+      loginProvider.currentuser = null;
+
+      // Go to LoginPage and clear navigation stack
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+            (route) => false,
+      );
+    } catch (e) {
+      print("Logout error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Logout failed: ${e.toString()}")),
+      );
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        title: Text('Contact RakshakAuth'),
+        title: Text(' RakshakAuth Profile'),
         leading: Builder(
           builder:
               (context) => IconButton(
@@ -122,6 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           Text('   Logout    '),
         ],
       ),
+      drawer: buildSidebarMenu(context, 'ProfilePage'),
       body: Stack(
         children: [Positioned.fill(
           child: Image.asset(
