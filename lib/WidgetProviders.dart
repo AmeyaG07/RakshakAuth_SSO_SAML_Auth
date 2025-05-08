@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:untitled/Loginpage1.dart';
 import 'package:untitled/landingpage.dart';
 import 'Contactus.dart';
-import 'package:restart_app/restart_app.dart';
 import 'loginprovider.dart';
 import 'Profilepage.dart';
 
@@ -157,19 +156,15 @@ class AppBarProvider extends ChangeNotifier {
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     try {
-      // Firebase sign out
       await FirebaseAuth.instance.signOut();
 
-      // Google sign out (if applicable)
       final googleSignIn = GoogleSignIn();
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
       }
 
-      // Clear user data
       loginProvider.currentuser = null;
 
-      // Go to LoginPage and clear navigation stack
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),

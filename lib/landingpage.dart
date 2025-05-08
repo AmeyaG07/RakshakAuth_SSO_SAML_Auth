@@ -39,18 +39,23 @@ class _LandingPage extends State<LandingPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, 'assets/images/linkedin.png', 'LinkedIn', 'https://www.linkedin.com/login'),
-                        _buildCard(context, 'assets/images/miro.png', 'Miro', 'https://miro.com/login/'),
-                        _buildCard(context, 'assets/images/coursera.png', 'Coursera', 'https://www.coursera.org/login'),
+
+                        _buildCard(context, 'assets/images/pinterest.png', 'Pinterest', 'https://in.pinterest.com/login/'),
+                        _buildCard(context, 'assets/images/canva.jpeg', 'Canva', 'https://www.canva.com/en_in/'),
+                        _buildCard(context, 'assets/images/zoom.png', 'Zoom', 'https://zoom.us/signin#/login'),
+
+
                       ],
                     ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildCard(context, 'assets/images/pinterest.png', 'Pinterest', 'https://in.pinterest.com/login/'),
-                        _buildCard(context, 'assets/images/zoom.png', 'Zoom', 'https://zoom.us/signin#/login'),
-                        _buildCard(context, 'assets/images/canva.jpeg', 'Canva', 'https://www.canva.com/en_in/'),
+
+                        _buildCard(context, 'assets/images/linkedin.png', 'LinkedIn', 'https://www.linkedin.com/login'),
+                        _buildCard(context, 'assets/images/miro.png', 'Miro', 'https://miro.com/login/'),
+                        _buildCard(context, 'assets/images/coursera.png', 'Coursera', 'https://www.coursera.org/login'),
+
                       ],
                     ),
                   ],
@@ -70,8 +75,8 @@ class _LandingPage extends State<LandingPage> {
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
-          width: 300,
-          height: 270,
+          width: 250,
+          height: 250,
           padding: EdgeInsets.all(12),
 
           child: Column(

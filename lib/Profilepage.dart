@@ -2,11 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:restart_app/restart_app.dart';
+import 'package:untitled/landingpage.dart';
 import 'Contactus.dart';
 import 'Loginpage1.dart';
 import 'SidebarWidget.dart';
-import 'landingpage.dart';
 import 'loginprovider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -141,7 +140,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           ),
 
           Text('   Contact Us   '),
-          IconButton(icon: Icon(Icons.home), onPressed: () {}),
+          IconButton(icon: Icon(Icons.home), onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LandingPage()),
+            );
+          }
+          ),
           Text('   Home    '),
           IconButton(
             icon: Icon(Icons.logout),

@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -108,7 +107,6 @@ class _userTableWidgetState extends State<userTableWidget> {
   List<User> users = [];
   bool _isLoading = true;
 
-   bool _isLoading = true;//
   @override
   void initState() {
     super.initState();
