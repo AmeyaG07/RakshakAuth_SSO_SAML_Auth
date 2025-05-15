@@ -17,7 +17,8 @@ class Screens {
     this.read = false,
     this.update = false,
     this.delete = false,
-  });
+  }
+  );
 
   Map<String, dynamic> toJson() {
     return {
