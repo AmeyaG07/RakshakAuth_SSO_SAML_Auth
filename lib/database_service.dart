@@ -11,7 +11,6 @@ class DatabaseService {
       print("Error creating user: $error");
     }
   }
-  // READ: Get user data
   Future<Map<String, dynamic>?> read(String userId) async {
     try {
       DatabaseEvent event = await _db.child("users/$userId").once();
