@@ -243,6 +243,3 @@ class Logincard extends StatelessWidget {
     );
   }
 }
-
-
-

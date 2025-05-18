@@ -8,35 +8,35 @@ import 'landingpage.dart';
 
 
 Widget buildSidebarMenu(BuildContext context, String currentPage, {bool isAdmin = false})
- {
+{
 
-      return Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blueGrey),
-              child: Column(
-                children: [
-                  Image.asset('assets/images/RA.png', width: 80),
-                  SizedBox(height: 10),
-                  Text(
-                    currentPage,
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ],
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        DrawerHeader(
+          decoration: BoxDecoration(color: Colors.blueGrey),
+          child: Column(
+            children: [
+              Image.asset('assets/images/RA.png', width: 80),
+              SizedBox(height: 10),
+              Text(
+                currentPage,
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
-            ),
-            _buildMenuItem(context, 'Profile', ProfileScreen(), currentPage),
-            _buildMenuItem(context, 'HomePage', LandingPage(), currentPage),
-            _buildMenuItem(context, 'Screen Management', ScreenManagement(), currentPage),
-            _buildMenuItem(context, 'Contact Us', ContactPage(), currentPage),
-            if (isAdmin)
-              _buildMenuItem(context, 'Admin Dashboard', AdminDashboard(), currentPage),
-            _buildLogoutItem(context),
-          ],
+            ],
+          ),
         ),
-      );
+        _buildMenuItem(context, 'Profile', ProfileScreen(), currentPage),
+        _buildMenuItem(context, 'HomePage', LandingPage(), currentPage),
+        _buildMenuItem(context, 'Screen Management', ScreenManagement(), currentPage),
+        _buildMenuItem(context, 'Contact Us', ContactPage(), currentPage),
+        if (isAdmin)
+          _buildMenuItem(context, 'Admin Dashboard', AdminDashboard(), currentPage),
+        _buildLogoutItem(context),
+      ],
+    ),
+  );
 
 }
 
@@ -109,5 +109,3 @@ void logout(BuildContext context) {
     MaterialPageRoute(builder: (context) => LoginPage()),
   );
 }
-
-

@@ -48,7 +48,7 @@ class AppBarProvider extends ChangeNotifier {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                    fontSize: 16,
                   ),
                 ),
                 SizedBox(width: 4),
@@ -386,5 +386,3 @@ class _SidebarMenu extends State<SidebarMenu> {
             ],
           ),
    */
-
-

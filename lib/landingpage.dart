@@ -108,4 +108,3 @@ void _launchURL(String url) async {
     throw 'Could not launch $url';
   }
 }
-
